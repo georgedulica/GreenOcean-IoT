@@ -2,6 +2,7 @@
 using GreenOcean.DTOs;
 using GreenOcean.Entities;
 using GreenOcean.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GreenOcean.Controllers;

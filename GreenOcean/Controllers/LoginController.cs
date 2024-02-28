@@ -31,7 +31,7 @@ public class LoginController : ControllerBase
         }
         else
         {
-            return BadRequest();
+            return Unauthorized();
         }
 
         if (login == true)
@@ -44,7 +44,7 @@ public class LoginController : ControllerBase
         }
         else
         {
-            return BadRequest();
+            return Unauthorized();
         }
     }
 

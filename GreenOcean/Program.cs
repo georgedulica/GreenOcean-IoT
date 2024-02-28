@@ -3,7 +3,10 @@ using GreenOcean.Helpers;
 using GreenOcean.Interfaces;
 using GreenOcean.Services;
 using GreenOcean.Settings;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,9 +19,11 @@ var configuration = new ConfigurationBuilder()
 
 // Email Configuration
 var emailSettings = new EmailSettings();
+configuration.GetSection("EmailSettings").Bind(emailSettings);
+
+// Token Configuration
 var tokenSettings = new TokenSettings();
 configuration.GetSection("TokenSettings").Bind(tokenSettings);
-configuration.GetSection("EmailSettings").Bind(emailSettings);
 
 // Add services to the container.
 
@@ -41,6 +46,18 @@ builder.Services.AddScoped<ITokenService>(serviceProvider => {
     return new TokenService(tokenSettings);
 });
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters()
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenSettings.TokenKey)),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+    });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -50,8 +67,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseAuthorization();
+app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod()
+    .WithOrigins("http://localhost:4200"));
 
+// Veirfy the token
+app.UseAuthentication();
+
+// Verify the permissions of the token
+app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
