@@ -19,7 +19,7 @@ public class LoginController : ControllerBase
         this.tokenService = tokenService;
     }
 
-    [HttpPost("/login")]
+    [HttpPost("login")]
     public async Task<ActionResult<TokenDTO>> Login(LoginDTO loginDTO)
     {
         bool login;
