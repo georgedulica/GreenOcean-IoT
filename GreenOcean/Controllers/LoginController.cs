@@ -1,5 +1,6 @@
 ﻿using GreenOcean.Data;
 using GreenOcean.DTOs;
+using GreenOcean.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
@@ -10,14 +11,16 @@ namespace GreenOcean.Controllers;
 public class LoginController : ControllerBase
 {
     private readonly DataContext dataContext;
-    
-    public LoginController(DataContext dataContext)
+    private readonly ITokenService tokenService;
+
+    public LoginController(DataContext dataContext, ITokenService tokenService)
     {
         this.dataContext = dataContext;
+        this.tokenService = tokenService;
     }
 
     [HttpPost("/login")]
-    public async Task<IActionResult> Login(LoginDTO loginDTO)
+    public async Task<ActionResult<TokenDTO>> Login(LoginDTO loginDTO)
     {
         bool login;
         
@@ -33,7 +36,11 @@ public class LoginController : ControllerBase
 
         if (login == true)
         {
-            return Ok();
+            return new TokenDTO
+            {
+                Username = user.Username,
+                Token = tokenService.CreateToken(user.Username)
+            };
         }
         else
         {

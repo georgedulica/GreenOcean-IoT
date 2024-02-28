@@ -1,6 +1,7 @@
 using GreenOcean.Data;
 using GreenOcean.Helpers;
 using GreenOcean.Interfaces;
+using GreenOcean.Services;
 using GreenOcean.Settings;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,8 @@ var configuration = new ConfigurationBuilder()
 
 // Email Configuration
 var emailSettings = new EmailSettings();
+var tokenSettings = new TokenSettings();
+configuration.GetSection("TokenSettings").Bind(tokenSettings);
 configuration.GetSection("EmailSettings").Bind(emailSettings);
 
 // Add services to the container.
@@ -32,6 +35,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ICreateUser>(serviceProvider =>
 {
     return new EmailService(emailSettings);
+});
+
+builder.Services.AddScoped<ITokenService>(serviceProvider => {
+    return new TokenService(tokenSettings);
 });
 
 var app = builder.Build();
