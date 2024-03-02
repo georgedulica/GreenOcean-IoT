@@ -42,10 +42,10 @@ builder.Services.AddScoped<ICreateUser>(serviceProvider =>
 {
     return new EmailService(emailSettings);
 });
-
 builder.Services.AddScoped<ITokenService>(serviceProvider => {
     return new TokenService(tokenSettings);
 });
+builder.Services.AddScoped<ISettingPassword, SettingPassword>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

@@ -16,11 +16,11 @@ public class TokenService : ITokenService
         _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenSettings.TokenKey));
     }
 
-    public string CreateToken(string username)
+    public string CreateToken(string name)
     {
         var claims = new List<Claim>
         {
-            new Claim(JwtRegisteredClaimNames.NameId, username)
+            new Claim(JwtRegisteredClaimNames.Name, name)
         };
 
         var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);

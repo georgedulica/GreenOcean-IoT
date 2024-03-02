@@ -36,11 +36,13 @@ public class LoginController : ControllerBase
 
         if (login == true)
         {
-            return new TokenDTO
+            var tokenDTO = new TokenDTO
             {
-                Username = user.Username,
+                Name = user.Username,
                 Token = tokenService.CreateToken(user.Username)
             };
+
+            return tokenDTO;
         }
         else
         {

@@ -4,5 +4,5 @@ namespace GreenOcean.Interfaces;
 
 public interface ITokenService
 {
-    public string CreateToken(string username);
+    public string CreateToken(string name);
 }
