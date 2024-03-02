@@ -9,12 +9,12 @@ namespace GreenOcean.Controllers;
 [ApiController]
 public class CreateUserController : ControllerBase
 {
-    private readonly DataContext context;
+    private readonly DataContext dataContext;
     private readonly IEmailService createUser;
 
     public CreateUserController(DataContext context, IEmailService createUser)
     {
-        this.context = context;
+        this.dataContext = context;
         this.createUser = createUser;
     }
 
@@ -23,6 +23,12 @@ public class CreateUserController : ControllerBase
     {
         if (userDTO.Email != null && userDTO.LastName != null && userDTO.FirstName != null)
         {
+            var existingEmail = EmailExists(userDTO.Email);
+            if (existingEmail == true)
+            {
+                return BadRequest();
+            }
+
             var userId = await SaveUser(userDTO);
             string code;
 
@@ -35,7 +41,7 @@ public class CreateUserController : ControllerBase
                 return BadRequest("The account was not created");
             }
 
-            var sentEmail = createUser.SendRegistrationEmail(userDTO, code);
+            var sentEmail = createUser.SendRegistrationEmail(userDTO.FirstName, userDTO.Email, code, "Templates/RegistrationEmailHTML.html");
             if (sentEmail == true)
             {
                 return Ok();
@@ -69,8 +75,8 @@ public class CreateUserController : ControllerBase
                 LastName = userDTO.LastName
             };
 
-            await context.AddAsync(user);
-            await context.SaveChangesAsync();
+            await dataContext.AddAsync(user);
+            await dataContext.SaveChangesAsync();
 
             var userId = user.Id;
             return userId;
@@ -91,10 +97,23 @@ public class CreateUserController : ControllerBase
             UserId = userId
         };
 
-        await context.AddAsync(code);
-        await context.SaveChangesAsync();
+        await dataContext.AddAsync(code);
+        await dataContext.SaveChangesAsync();
 
         return randomNumber;
+    }
+
+    private bool EmailExists(string email)
+    {
+        var user = dataContext.Users.Any(u => u.Email == email);
+        if (user == true)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     private byte[] GetRandomBlob()

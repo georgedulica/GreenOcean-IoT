@@ -38,7 +38,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Register dependencies
-builder.Services.AddScoped<ICreateUser>(serviceProvider =>
+builder.Services.AddScoped<IEmailService>(serviceProvider =>
 {
     return new EmailService(emailSettings);
 });

@@ -1,7 +1,6 @@
-﻿namespace GreenOcean.DTOs
+﻿namespace GreenOcean.DTOs;
+
+public class CodeDTO
 {
-    public class CodeDTO
-    {
-        
-    }
+    public int Code { get; set; }
 }

@@ -1,8 +1,7 @@
 ﻿using GreenOcean.Interfaces;
-using System.Net.Mail;
-using System.Net;
 using GreenOcean.Settings;
-using GreenOcean.DTOs;
+using System.Net;
+using System.Net.Mail;
 
 namespace GreenOcean.Helpers;
 
@@ -15,18 +14,18 @@ public class EmailService : IEmailService
         this.emailSettings = emailSettings;
     }
 
-    public bool SendRegistrationEmail(UserDTO userDTO, string code, string path)
+    public bool SendRegistrationEmail(string name, string email, string code, string path)
     {
         try
         { 
             string emailTemplate = File.ReadAllText(path);
-            string emailBody = emailTemplate.Replace("{name}", userDTO.FirstName)
+            string emailBody = emailTemplate.Replace("{name}", name)
                                             .Replace("{code}", code);
 
             var mailMessage = new MailMessage();
             mailMessage.From = new MailAddress(emailSettings.FromEmail);
             mailMessage.Subject = "Inregistrare";
-            mailMessage.To.Add(new MailAddress(userDTO.Email));
+            mailMessage.To.Add(new MailAddress(email));
             mailMessage.Body = emailBody;
             mailMessage.IsBodyHtml = true;
 

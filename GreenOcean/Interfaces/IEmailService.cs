@@ -1,8 +1,6 @@
-﻿using GreenOcean.DTOs;
-
-namespace GreenOcean.Interfaces;
+﻿namespace GreenOcean.Interfaces;
 
 public interface IEmailService
 {
-    public bool SendRegistrationEmail(UserDTO userDTO, string code, string path);
+    public bool SendRegistrationEmail(string name, string email, string code, string path);
 }
