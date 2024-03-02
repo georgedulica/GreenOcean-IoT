@@ -6,7 +6,7 @@ using GreenOcean.DTOs;
 
 namespace GreenOcean.Helpers;
 
-public class EmailService : ICreateUser
+public class EmailService : IEmailService
 {
     private readonly EmailSettings emailSettings;
 
@@ -15,11 +15,11 @@ public class EmailService : ICreateUser
         this.emailSettings = emailSettings;
     }
 
-    public bool SendRegistrationEmail(UserDTO userDTO, string code)
+    public bool SendRegistrationEmail(UserDTO userDTO, string code, string path)
     {
         try
         { 
-            string emailTemplate = File.ReadAllText(emailSettings.TemplatePath);
+            string emailTemplate = File.ReadAllText(path);
             string emailBody = emailTemplate.Replace("{name}", userDTO.FirstName)
                                             .Replace("{code}", code);
 

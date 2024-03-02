@@ -24,6 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Templates\ResetPasswordTemplateEmailHTML.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Templates\RegistrationEmailHTML.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

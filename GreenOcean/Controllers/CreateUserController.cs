@@ -2,7 +2,6 @@
 using GreenOcean.DTOs;
 using GreenOcean.Entities;
 using GreenOcean.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GreenOcean.Controllers;
@@ -11,9 +10,9 @@ namespace GreenOcean.Controllers;
 public class CreateUserController : ControllerBase
 {
     private readonly DataContext context;
-    private readonly ICreateUser createUser;
+    private readonly IEmailService createUser;
 
-    public CreateUserController(DataContext context, ICreateUser createUser)
+    public CreateUserController(DataContext context, IEmailService createUser)
     {
         this.context = context;
         this.createUser = createUser;
