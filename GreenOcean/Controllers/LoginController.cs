@@ -20,7 +20,7 @@ public class LoginController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<ActionResult<TokenDTO>> Login(LoginDTO loginDTO)
+    public async Task<ActionResult<LoginTokenDTO>> Login(LoginDTO loginDTO)
     {
         bool login;
         
@@ -36,9 +36,9 @@ public class LoginController : ControllerBase
 
         if (login == true)
         {
-            var tokenDTO = new TokenDTO
+            var tokenDTO = new LoginTokenDTO
             {
-                Name = user.Username,
+                Username = user.Username,
                 Token = tokenService.CreateToken(user.Username)
             };
 

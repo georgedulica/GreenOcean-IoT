@@ -26,7 +26,7 @@ public class ResetPasswordController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<TokenDTO>> SendEmail(EmailDTO emailDTO)
+    public async Task<ActionResult<ResetPasswordDTO>> SendEmail(EmailDTO emailDTO)
     {
         var user = await dataContext.Users.FirstOrDefaultAsync(u => string.Equals(u.Email, emailDTO.Email));
 
@@ -53,7 +53,7 @@ public class ResetPasswordController : ControllerBase
             return StatusCode(500);
         }
 
-        var tokenDTO = new TokenDTO
+        var tokenDTO = new ResetPasswordDTO
         {
             Name = "reset",
             Token = tokenService.CreateToken(user.Username)
