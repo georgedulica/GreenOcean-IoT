@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GreenOcean.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240225132914_Creation")]
-    partial class Creation
+    [Migration("20240303154431_Initialization")]
+    partial class Initialization
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,9 +39,39 @@ namespace GreenOcean.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Codes");
+                });
+
+            modelBuilder.Entity("GreenOcean.Entities.GreenHouse", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Number")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Street")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("GreenHouses");
                 });
 
             modelBuilder.Entity("GreenOcean.Entities.User", b =>
@@ -82,12 +112,30 @@ namespace GreenOcean.Migrations
             modelBuilder.Entity("GreenOcean.Entities.Code", b =>
                 {
                     b.HasOne("GreenOcean.Entities.User", "User")
-                        .WithMany()
+                        .WithOne("Code")
+                        .HasForeignKey("GreenOcean.Entities.Code", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("GreenOcean.Entities.GreenHouse", b =>
+                {
+                    b.HasOne("GreenOcean.Entities.User", "User")
+                        .WithMany("Posts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("GreenOcean.Entities.User", b =>
+                {
+                    b.Navigation("Code");
+
+                    b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618
         }

@@ -2,6 +2,7 @@
 using GreenOcean.DTOs;
 using GreenOcean.Entities;
 using GreenOcean.Interfaces;
+using GreenOcean.Tokens;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,7 +27,7 @@ public class ResetingPasswordController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<ResetPasswordDTO>> SendEmail(EmailDTO emailDTO)
+    public async Task<ActionResult<ResetPasswordToken>> SendEmail(EmailDTO emailDTO)
     {
         var user = await dataContext.Users.FirstOrDefaultAsync(u => string.Equals(u.Email, emailDTO.Email));
 
@@ -54,7 +55,7 @@ public class ResetingPasswordController : ControllerBase
             return BadRequest();
         }
 
-        var tokenDTO = new ResetPasswordDTO
+        var tokenDTO = new ResetPasswordToken
         {
             Name = "reset",
             Token = tokenService.CreateToken(user.Username)

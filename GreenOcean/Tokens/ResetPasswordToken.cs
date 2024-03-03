@@ -1,6 +1,6 @@
-﻿namespace GreenOcean.DTOs;
+﻿namespace GreenOcean.Tokens;
 
-public class ResetPasswordDTO
+public class ResetPasswordToken
 {
     public string Name { get; set; }
 

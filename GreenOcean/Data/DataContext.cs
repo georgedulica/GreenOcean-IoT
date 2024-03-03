@@ -12,4 +12,6 @@ public class DataContext : DbContext
     public DbSet<User> Users { get; set; }
 
     public DbSet<Code> Codes { get; set; }
+
+    public DbSet<Greenhouse> Greenhouses { get; set; }
 }

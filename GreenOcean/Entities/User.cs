@@ -1,4 +1,6 @@
-﻿namespace GreenOcean.Entities;
+﻿using Microsoft.Extensions.Hosting;
+
+namespace GreenOcean.Entities;
 
 public class User
 {
@@ -15,4 +17,8 @@ public class User
     public string FirstName { get; set; }
 
     public string LastName { get; set; }
+
+    public Code? Code { get; set; }
+
+    public ICollection<Greenhouse> Posts { get; } = new List<Greenhouse>(); 
 }

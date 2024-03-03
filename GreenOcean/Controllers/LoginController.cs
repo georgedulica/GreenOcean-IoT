@@ -1,6 +1,7 @@
 ﻿using GreenOcean.Data;
 using GreenOcean.DTOs;
 using GreenOcean.Interfaces;
+using GreenOcean.Tokens;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
@@ -20,7 +21,7 @@ public class LoginController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<ActionResult<LoginTokenDTO>> Login(LoginDTO loginDTO)
+    public async Task<ActionResult<LoginToken>> Login(LoginDTO loginDTO)
     {     
         var user = await dataContext.Users.FirstOrDefaultAsync(u => string.Equals(u.Username, loginDTO.Username));
         if (user == null)
@@ -34,7 +35,7 @@ public class LoginController : ControllerBase
             return Unauthorized();
         }
 
-        var tokenDTO = new LoginTokenDTO
+        var tokenDTO = new LoginToken
         {
             Username = user.Username,
             Token = tokenService.CreateToken(user.Username)

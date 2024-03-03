@@ -1,6 +1,6 @@
-﻿namespace GreenOcean.DTOs;
+﻿namespace GreenOcean.Tokens;
 
-public class AccountValidationTokenDTO
+public class AccountValidationToken
 {
     public string Name { get; set; }
 
