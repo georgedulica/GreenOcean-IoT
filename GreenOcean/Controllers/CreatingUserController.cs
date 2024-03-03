@@ -7,12 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace GreenOcean.Controllers;
 
 [ApiController]
-public class CreateUserController : ControllerBase
+public class CreatingUserController : ControllerBase
 {
     private readonly DataContext dataContext;
     private readonly IEmailService createUser;
 
-    public CreateUserController(DataContext context, IEmailService createUser)
+    public CreatingUserController(DataContext context, IEmailService createUser)
     {
         this.dataContext = context;
         this.createUser = createUser;
@@ -21,43 +21,40 @@ public class CreateUserController : ControllerBase
     [HttpPost("createUser")]
     public async Task<IActionResult> CreateUser(UserDTO userDTO)
     {
-        if (userDTO.Email != null && userDTO.LastName != null && userDTO.FirstName != null)
+        if (userDTO.Email == null && userDTO.LastName == null && userDTO.FirstName == null)
         {
-            var existingEmail = EmailExists(userDTO.Email);
-            if (existingEmail == true)
-            {
-                return BadRequest();
-            }
-
-            var userId = await SaveUser(userDTO);
-            string code;
-
-            if (userId != null)
-            {
-                code = (await SaveCode(userId.Value)).ToString();
-            }
-            else
-            {
-                return BadRequest("The account was not created");
-            }
-
-            var sentEmail = createUser.SendRegistrationEmail(userDTO.FirstName, userDTO.Email, code, "Templates/RegistrationEmailHTML.html");
-            if (sentEmail == true)
-            {
-                return Ok();
-            }
-            else
-            {
-                return BadRequest("The email was not sent");
-            }
+            return BadRequest();
         }
-        else
+
+        var existingEmail = EmailExists(userDTO.Email);
+        if (existingEmail == true)
         {
-            return BadRequest("The account was not created");
+            return BadRequest();
         }
+
+        var user = await SaveUser(userDTO);
+        if (user == null)
+        {
+            return BadRequest();
+        }
+
+        var userId = user.Id;
+        var code = await SaveCode(userId);
+        var generatedCode = code.GeneratedCode.ToString();
+        var sentEmail = createUser.SendRegistrationEmail(userId, userDTO.FirstName, userDTO.Email, generatedCode, "Templates/RegistrationEmailHTML.html");
+        if (sentEmail == false)
+        {
+            dataContext.Users.Remove(user);
+            await dataContext.SaveChangesAsync();
+            dataContext.Codes.Remove(code);
+            await dataContext.SaveChangesAsync();
+            return BadRequest("The email was not sent");
+        }
+
+        return Ok();
     }
 
-    private async Task<Guid?> SaveUser(UserDTO userDTO)
+    private async Task<User> SaveUser(UserDTO userDTO)
     {
         if (userDTO.Email != null && userDTO.LastName != null && userDTO.FirstName != null)
         {
@@ -79,7 +76,7 @@ public class CreateUserController : ControllerBase
             await dataContext.SaveChangesAsync();
 
             var userId = user.Id;
-            return userId;
+            return user;
         }
         else
         {
@@ -87,7 +84,7 @@ public class CreateUserController : ControllerBase
         }
     }
 
-    private async Task<int> SaveCode(Guid userId)
+    private async Task<Code> SaveCode(Guid userId)
     {
         var randomNumber = GenerateCode();
 
@@ -100,12 +97,12 @@ public class CreateUserController : ControllerBase
         await dataContext.AddAsync(code);
         await dataContext.SaveChangesAsync();
 
-        return randomNumber;
+        return code;
     }
 
     private bool EmailExists(string email)
     {
-        var user = dataContext.Users.Any(u => u.Email == email);
+        var user = dataContext.Users.Any(u => string.Equals(u.Email, email));
         if (user == true)
         {
             return true;

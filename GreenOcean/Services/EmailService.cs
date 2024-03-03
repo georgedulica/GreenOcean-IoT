@@ -14,13 +14,14 @@ public class EmailService : IEmailService
         this.emailSettings = emailSettings;
     }
 
-    public bool SendRegistrationEmail(string name, string email, string code, string path)
+    public bool SendRegistrationEmail(Guid? id, string name, string email, string code, string path)
     {
         try
         { 
             string emailTemplate = File.ReadAllText(path);
             string emailBody = emailTemplate.Replace("{name}", name)
-                                            .Replace("{code}", code);
+                                            .Replace("{code}", code)
+                                            .Replace("{id}", id.ToString());
 
             var mailMessage = new MailMessage();
             mailMessage.From = new MailAddress(emailSettings.FromEmail);

@@ -9,14 +9,14 @@ namespace GreenOcean.Controllers;
 
 [ApiController]
 [Route("resetpassword")]
-public class ResetPasswordController : ControllerBase
+public class ResetingPasswordController : ControllerBase
 {
     private readonly DataContext dataContext;
     private readonly IEmailService emailService;
     private readonly ITokenService tokenService;
     private readonly ISettingPassword settingPassword;
 
-    public ResetPasswordController(DataContext dataContext, ITokenService tokenService, 
+    public ResetingPasswordController(DataContext dataContext, ITokenService tokenService, 
         IEmailService emailService, ISettingPassword settingPassword)
     {
         this.dataContext = dataContext;
@@ -46,11 +46,12 @@ public class ResetPasswordController : ControllerBase
         await dataContext.SaveChangesAsync();
 
         var sentEmail = emailService
-            .SendRegistrationEmail(user.FirstName, user.Email, generatedCode.ToString(), "Templates/ResetPasswordTemplateEmailHTML.html");
-
+            .SendRegistrationEmail(null, user.FirstName, user.Email, generatedCode.ToString(), "Templates/ResetPasswordTemplateEmailHTML.html");
         if (sentEmail == false)
         {
-            return StatusCode(500);
+            dataContext.Codes.Remove(code);
+            await dataContext.SaveChangesAsync();
+            return BadRequest();
         }
 
         var tokenDTO = new ResetPasswordDTO
@@ -68,14 +69,12 @@ public class ResetPasswordController : ControllerBase
         var recievedCode = codeDTO.Code;
         var (id, code) = await CompareCode(recievedCode);
 
-        if (code == true)
-        {
-            return id;
-        }
-        else
+        if (code == false)
         {
             return BadRequest();
         }
+
+        return id;
     }    
     
     [HttpPost("confirmcode/changepassword/{id}")]

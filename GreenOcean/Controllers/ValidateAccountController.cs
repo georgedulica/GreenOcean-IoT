@@ -1,6 +1,5 @@
 ﻿using GreenOcean.Data;
 using GreenOcean.DTOs;
-using GreenOcean.Entities;
 using GreenOcean.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,67 +7,75 @@ using Microsoft.EntityFrameworkCore;
 namespace GreenOcean.Controllers;
 
 [ApiController]
+[Route("validateaccount")]
 public class ValidateAccountController : ControllerBase
 {
     private readonly DataContext dataContext;
+    private readonly ITokenService tokenService;
     private readonly ISettingPassword settingPassword;
 
-    public ValidateAccountController(DataContext dataContext, ISettingPassword settingPassword)
+    public ValidateAccountController(DataContext dataContext, ISettingPassword settingPassword, ITokenService tokenService)
     {
         this.dataContext = dataContext;
         this.settingPassword = settingPassword;
+        this.tokenService = tokenService;
     }
 
-    [HttpPut("/validateaccount/{id}")]
-    public async Task<IActionResult> ValidateAccount(string id, ValidateAccountDTO validateAccountDTO)
+    [HttpPost("confirmcode/{id}")]
+    public async Task<IActionResult> ValidateAccount(CodeDTO codeDTO, string id)
     {
-        User account;
-        Code code;
-        int generatedCode;
-
         if (!Guid.TryParse(id, out Guid userId))
         {
             return BadRequest("Invalid id format");
         }
 
-        var user = UsernameExists(validateAccountDTO.Username);
-        if (user == false)
+        var code = await dataContext.Codes.FirstOrDefaultAsync(c => c.UserId == userId);
+        if (code.GeneratedCode != codeDTO.Code)
         {
-            account = await dataContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            return BadRequest("The code is invalid");
         }
-        else
-        {
-            return BadRequest();
-        }
-
-        if (account != null)
-        {
-            (code, generatedCode) = await GetCode(userId);
-        }
-        else
-        {
-            return BadRequest();
-        }
-
-        if (generatedCode == validateAccountDTO.Code)
-        {
-            var hash = settingPassword.EncryptPassword(validateAccountDTO.Password, out var salt);
-
-            account.Username = validateAccountDTO.Username;
-            account.Password = hash;
-            account.Salt = salt;
-
-            await dataContext.SaveChangesAsync();
-        }
-        else
-        {
-            return BadRequest();
-        }
-
 
         dataContext.Codes.Remove(code);
         await dataContext.SaveChangesAsync();
 
+        var validationToken = new AccountValidationTokenDTO
+        {
+            Name = "validate",
+            Token = tokenService.CreateToken(userId.ToString())
+        };
+
+        return Ok(validationToken);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> ValidateAccount(ValidateAccountDTO validateAccountDTO, string id)
+    {
+        if (!Guid.TryParse(id, out Guid userId))
+        {
+            return BadRequest("Invalid id format");
+        }
+
+        if (!string.Equals(validateAccountDTO.Password, validateAccountDTO.ConfirmedPassword))
+        {
+            return BadRequest("Passwords does not match");
+        }
+
+        var existingUsername = dataContext.Users.Any(u => string.Equals(validateAccountDTO.Username, u.Username));
+        if (existingUsername == true)
+        {
+            return BadRequest("Username exists");
+        }
+
+        var user = await dataContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        
+        var hash = settingPassword.EncryptPassword(validateAccountDTO.Password, out var salt);
+        
+        user.Username = validateAccountDTO.Username;
+        user.Password = hash;
+        user.Salt = salt;
+
+        await dataContext.SaveChangesAsync();
+        
         return Ok();
     }
 
@@ -83,13 +90,5 @@ public class ValidateAccountController : ControllerBase
         {
             return false;
         }
-    }
-
-    private async Task<(Code, int)> GetCode(Guid userId)
-    {
-        var code = await dataContext.Codes.FirstOrDefaultAsync(c => c.UserId == userId);
-        var generatedCode = code.GeneratedCode;
-
-        return (code, generatedCode);
     }
 };

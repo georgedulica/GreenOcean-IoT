@@ -21,33 +21,25 @@ public class LoginController : ControllerBase
 
     [HttpPost("login")]
     public async Task<ActionResult<LoginTokenDTO>> Login(LoginDTO loginDTO)
-    {
-        bool login;
-        
+    {     
         var user = await dataContext.Users.FirstOrDefaultAsync(u => string.Equals(u.Username, loginDTO.Username));
-        if (user != null)
-        {
-            login = VerifyPassword(loginDTO.Password, user.Password, user.Salt); 
-        }
-        else
+        if (user == null)
         {
             return Unauthorized();
         }
 
-        if (login == true)
-        {
-            var tokenDTO = new LoginTokenDTO
-            {
-                Username = user.Username,
-                Token = tokenService.CreateToken(user.Username)
-            };
-
-            return tokenDTO;
-        }
-        else
+        var login = VerifyPassword(loginDTO.Password, user.Password, user.Salt); 
+        if (login == false)
         {
             return Unauthorized();
         }
+
+        var tokenDTO = new LoginTokenDTO
+        {
+            Username = user.Username,
+            Token = tokenService.CreateToken(user.Username)
+        };
+        return tokenDTO;
     }
 
     private bool VerifyPassword(string password, byte[] hash, byte[] salt)
