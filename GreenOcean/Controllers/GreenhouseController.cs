@@ -1,4 +1,5 @@
-﻿using GreenOcean.Data;
+﻿using AutoMapper;
+using GreenOcean.Data;
 using GreenOcean.DTOs;
 using GreenOcean.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -7,17 +8,19 @@ using Microsoft.EntityFrameworkCore;
 namespace GreenOcean.Controllers;
 
 [ApiController]
-[Route("greenhouse")]
+[Route("greenhouses")]
 public class GreenhouseController : ControllerBase
 {
     private readonly DataContext dataContext;
+    private readonly IMapper mapper;
 
-    public GreenhouseController(DataContext dataContext)
+    public GreenhouseController(DataContext dataContext, IMapper mapper)
     {
         this.dataContext = dataContext;
+        this.mapper = mapper;
     }
 
-    [HttpPut("{username}")]
+    [HttpPut("/creategreenhouse/{username}")]
     public async Task<IActionResult> CreateGreenhouse(GreenhouseDTO greenhouseDTO, string username)
     {
         if (greenhouseDTO.Name == null)
@@ -44,5 +47,20 @@ public class GreenhouseController : ControllerBase
         await dataContext.SaveChangesAsync();
 
         return Ok();
+    }
+
+    [HttpGet("{username}")]
+    public async Task<ActionResult<IEnumerable<GreenhouseDTO>>> GetGreenHouse(string username)
+    {
+        var user = await dataContext.Users.FirstOrDefaultAsync(u => string.Equals(u.Username, username));
+        if (user == null)
+        {
+            return BadRequest();
+        }
+
+        var greenhouses = await dataContext.Greenhouses.Where(g => g.UserId == user.Id).ToListAsync();
+        var greenhousesAsDTO = mapper.Map<IEnumerable<GreenhouseDTO>>(greenhouses);
+
+        return Ok(greenhousesAsDTO);
     }
 }

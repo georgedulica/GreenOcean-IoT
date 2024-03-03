@@ -1,6 +1,7 @@
 ﻿using GreenOcean.Data;
 using GreenOcean.DTOs;
 using GreenOcean.Interfaces;
+using GreenOcean.Tokens;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,7 +39,7 @@ public class ValidateAccountController : ControllerBase
         dataContext.Codes.Remove(code);
         await dataContext.SaveChangesAsync();
 
-        var validationToken = new AccountValidationTokenDTO
+        var validationToken = new AccountValidationToken
         {
             Name = "validate",
             Token = tokenService.CreateToken(userId.ToString())

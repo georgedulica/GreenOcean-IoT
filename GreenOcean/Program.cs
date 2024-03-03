@@ -47,6 +47,9 @@ builder.Services.AddScoped<ITokenService>(serviceProvider => {
 });
 builder.Services.AddScoped<ISettingPassword, SettingPassword>();
 
+// Automapper
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
