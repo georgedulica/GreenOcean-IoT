@@ -4,7 +4,6 @@ using GreenOcean.DTOs;
 using GreenOcean.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace GreenOcean.Controllers;
 
