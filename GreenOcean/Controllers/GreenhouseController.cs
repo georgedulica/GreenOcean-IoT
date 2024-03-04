@@ -2,12 +2,15 @@
 using GreenOcean.Data;
 using GreenOcean.DTOs;
 using GreenOcean.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace GreenOcean.Controllers;
 
+
 [ApiController]
+[Authorize]
 [Route("greenhouses")]
 public class GreenhouseController : ControllerBase
 {
@@ -35,25 +38,25 @@ public class GreenhouseController : ControllerBase
         return Ok(greenhousesAsDTO);
     }
 
-    //[HttpGet("edit/{username}/{id}")]
-    //public async Task<ActionResult<GreenhouseDTO>> GetGreenhouse(string username, string id)
-    //{
-    //    var user = await dataContext.Users.FirstOrDefaultAsync(u => string.Equals(u.Username, username));
-    //    if (user == null)
-    //    {
-    //        return BadRequest();
-    //    }
+    [HttpGet("greenhouse/{username}/{id}")]
+    public async Task<ActionResult<GreenhouseDTO>> GetGreenhouse(string username, string id)
+    {
+        var user = await dataContext.Users.FirstOrDefaultAsync(u => string.Equals(u.Username, username));
+        if (user == null)
+        {
+            return BadRequest();
+        }
 
-    //    if (!Guid.TryParse(id, out Guid greenhouseId))
-    //    {
-    //        return BadRequest("Invalid id format");
-    //    }
+        if (!Guid.TryParse(id, out Guid greenhouseId))
+        {
+            return BadRequest("Invalid id format");
+        }
 
-    //    var greenhouse = await dataContext.Greenhouses.FirstOrDefaultAsync(g => g.Id == greenhouseId && g.UserId == user.Id);
-    //    var greenhouseAsDTO = mapper.Map<IEnumerable<GreenhouseDTO>>(greenhouse);
+        var greenhouse = await dataContext.Greenhouses.FirstOrDefaultAsync(g => g.Id == greenhouseId && g.UserId == user.Id);
+        var greenhouseAsDTO = mapper.Map<GreenhouseDTO>(greenhouse);
 
-    //    return Ok(greenhouseAsDTO);
-    //}
+        return Ok(greenhouseAsDTO);
+    }
 
     [HttpGet("orderbyname/{username}/{type}")]
     public async Task<ActionResult<IEnumerable<GreenhouseDTO>>> OrderByName(string username, string type)
@@ -189,7 +192,7 @@ public class GreenhouseController : ControllerBase
     }
     
     [HttpPut("editgreenhouse/{username}/{id}")]
-    public async Task<ActionResult> EditGreenhouse(GreenhouseDTO greenhouseDTO, string username, string id)
+    public async Task<IActionResult> EditGreenhouse(GreenhouseDTO greenhouseDTO, string username, string id)
     {
         var user = await dataContext.Users.FirstOrDefaultAsync(u => string.Equals(u.Username, username));
         if (user == null)

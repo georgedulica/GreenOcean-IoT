@@ -2,6 +2,8 @@
 
 public class GreenhouseDTO
 {
+    public Guid? Id { get; set; }
+
     public string Name { get; set; }
 
     public string? Street { get; set; }
