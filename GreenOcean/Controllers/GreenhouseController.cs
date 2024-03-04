@@ -227,7 +227,7 @@ public class GreenhouseController : ControllerBase
     }
 
     [HttpDelete("deletegreenhouse/{username}/{id}")]
-    public async Task<ActionResult> DeleateGreenhouse(string username, string id)
+    public async Task<ActionResult> DeleteGreenhouse(string username, string id)
     {
         var user = await dataContext.Users.FirstOrDefaultAsync(u => string.Equals(u.Username, username));
         if (user == null)
