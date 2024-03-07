@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GreenOcean.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240303154431_Initialization")]
-    partial class Initialization
+    [Migration("20240307134832_TablePlants")]
+    partial class TablePlants
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,7 +45,7 @@ namespace GreenOcean.Migrations
                     b.ToTable("Codes");
                 });
 
-            modelBuilder.Entity("GreenOcean.Entities.GreenHouse", b =>
+            modelBuilder.Entity("GreenOcean.Entities.Greenhouse", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -71,7 +71,51 @@ namespace GreenOcean.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("GreenHouses");
+                    b.ToTable("Greenhouses");
+                });
+
+            modelBuilder.Entity("GreenOcean.Entities.Plants", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("GreenhouseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("Height")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Humidity")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MaxTemperature")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MinTemperature")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MositureLevel")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhotoURL")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Soil")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GreenhouseId");
+
+                    b.ToTable("Plants");
                 });
 
             modelBuilder.Entity("GreenOcean.Entities.User", b =>
@@ -120,10 +164,10 @@ namespace GreenOcean.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("GreenOcean.Entities.GreenHouse", b =>
+            modelBuilder.Entity("GreenOcean.Entities.Greenhouse", b =>
                 {
                     b.HasOne("GreenOcean.Entities.User", "User")
-                        .WithMany("Posts")
+                        .WithMany("Greenhouses")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -131,11 +175,27 @@ namespace GreenOcean.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("GreenOcean.Entities.Plants", b =>
+                {
+                    b.HasOne("GreenOcean.Entities.Greenhouse", "Greenhouse")
+                        .WithMany("Plants")
+                        .HasForeignKey("GreenhouseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Greenhouse");
+                });
+
+            modelBuilder.Entity("GreenOcean.Entities.Greenhouse", b =>
+                {
+                    b.Navigation("Plants");
+                });
+
             modelBuilder.Entity("GreenOcean.Entities.User", b =>
                 {
                     b.Navigation("Code");
 
-                    b.Navigation("Posts");
+                    b.Navigation("Greenhouses");
                 });
 #pragma warning restore 612, 618
         }

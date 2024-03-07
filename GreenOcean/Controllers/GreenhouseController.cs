@@ -110,7 +110,7 @@ public class GreenhouseController : ControllerBase
         return Ok(greenhousesAsDTO);
     }    
     
-    [HttpGet("orderbynumber/{username}/{type}")]
+    [HttpGet("orderbystreetnumber/{username}/{type}")]
     public async Task<ActionResult<IEnumerable<GreenhouseDTO>>> OrderByNumber(string username, string type)
     {
         var user = await dataContext.Users.FirstOrDefaultAsync(u => string.Equals(u.Username, username));

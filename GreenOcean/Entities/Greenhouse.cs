@@ -1,6 +1,4 @@
-﻿using System.Reflection.Metadata;
-
-namespace GreenOcean.Entities;
+﻿namespace GreenOcean.Entities;
 
 public class Greenhouse
 {
@@ -17,4 +15,6 @@ public class Greenhouse
     public Guid UserId { get; set; }
 
     public User User { get; set; } = null!;
+
+    public ICollection<Plant> Plants { get; } = new List<Plant>();
 }

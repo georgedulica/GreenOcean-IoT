@@ -20,5 +20,5 @@ public class User
 
     public Code? Code { get; set; }
 
-    public ICollection<Greenhouse> Posts { get; } = new List<Greenhouse>(); 
+    public ICollection<Greenhouse> Greenhouses { get; } = new List<Greenhouse>(); 
 }

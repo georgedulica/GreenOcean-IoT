@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GreenOcean.Migrations
 {
     /// <inheritdoc />
-    public partial class Initialization : Migration
+    public partial class TablePlants : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -48,7 +48,7 @@ namespace GreenOcean.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GreenHouses",
+                name: "Greenhouses",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -60,11 +60,38 @@ namespace GreenOcean.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GreenHouses", x => x.Id);
+                    table.PrimaryKey("PK_Greenhouses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_GreenHouses_Users_UserId",
+                        name: "FK_Greenhouses_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Plants",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Soil = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Height = table.Column<int>(type: "int", nullable: true),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhotoURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MositureLevel = table.Column<int>(type: "int", nullable: true),
+                    Humidity = table.Column<int>(type: "int", nullable: true),
+                    MaxTemperature = table.Column<int>(type: "int", nullable: true),
+                    MinTemperature = table.Column<int>(type: "int", nullable: true),
+                    GreenhouseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Plants", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Plants_Greenhouses_GreenhouseId",
+                        column: x => x.GreenhouseId,
+                        principalTable: "Greenhouses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -76,9 +103,14 @@ namespace GreenOcean.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_GreenHouses_UserId",
-                table: "GreenHouses",
+                name: "IX_Greenhouses_UserId",
+                table: "Greenhouses",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Plants_GreenhouseId",
+                table: "Plants",
+                column: "GreenhouseId");
         }
 
         /// <inheritdoc />
@@ -88,7 +120,10 @@ namespace GreenOcean.Migrations
                 name: "Codes");
 
             migrationBuilder.DropTable(
-                name: "GreenHouses");
+                name: "Plants");
+
+            migrationBuilder.DropTable(
+                name: "Greenhouses");
 
             migrationBuilder.DropTable(
                 name: "Users");
