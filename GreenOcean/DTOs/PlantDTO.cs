@@ -4,6 +4,8 @@ public class PlantDTO
 {
     public string Name { get; set; }
 
+    public IFormFile file { get; set; }
+
     public string? Soil { get; set; }
 
     public int? Height { get; set; }

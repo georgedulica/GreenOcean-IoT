@@ -25,15 +25,16 @@ configuration.GetSection("EmailSettings").Bind(emailSettings);
 var tokenSettings = new TokenSettings();
 configuration.GetSection("TokenSettings").Bind(tokenSettings);
 
-// Add services to the container.
+// Cloudinary Settings
+builder.Services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
 
+// Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddDbContext<DataContext>(opt =>
 {
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 builder.Services.AddCors();
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -46,6 +47,7 @@ builder.Services.AddScoped<ITokenService>(serviceProvider => {
     return new TokenService(tokenSettings);
 });
 builder.Services.AddScoped<ISettingPassword, SettingPassword>();
+builder.Services.AddScoped<IPhotoService, PhotoService>();
 
 // Automapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

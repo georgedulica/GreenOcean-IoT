@@ -22,6 +22,8 @@ public class Plant
 
     public int? MinTemperature { get; set; }
 
+    public string PhotoId { get; set; }
+
     public Guid GreenhouseId { get; set; }
 
     public Greenhouse Greenhouse { get; set; } = null!;
