@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 /GreenOcean-IoT/GreenOcean/appsettings.json
+/GreenOcean/appsettings.json
