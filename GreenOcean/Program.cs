@@ -28,6 +28,9 @@ configuration.GetSection("TokenSettings").Bind(tokenSettings);
 // Cloudinary Settings
 builder.Services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
 
+// Basic photo
+builder.Services.Configure<BasicPhotoSettings>(configuration.GetSection("BasicPhoto"));
+
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddDbContext<DataContext>(opt =>

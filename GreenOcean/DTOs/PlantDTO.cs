@@ -2,11 +2,9 @@
 
 public class PlantDTO
 {
-    public Guid Id { get; set; }
+    public Guid? Id { get; set; }
 
     public string Name { get; set; }
-
-    public IFormFile File { get; set; }
 
     public string? Soil { get; set; }
 
