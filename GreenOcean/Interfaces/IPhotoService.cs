@@ -4,7 +4,7 @@ namespace GreenOcean.Interfaces;
 
 public interface IPhotoService
 {
-    Task<ImageUploadResult> AddPhotoAsync(IFormFile file);
+    Task<ImageUploadResult> AddPhoto(IFormFile file);
 
-    Task<DeletionResult> DeletePhotoAsyncPhotoAsync(string publicId);
+    Task<DeletionResult> DeletePhoto(string publicId);
 }

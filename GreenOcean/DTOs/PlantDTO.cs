@@ -2,9 +2,11 @@
 
 public class PlantDTO
 {
+    public Guid Id { get; set; }
+
     public string Name { get; set; }
 
-    public IFormFile file { get; set; }
+    public IFormFile File { get; set; }
 
     public string? Soil { get; set; }
 
@@ -21,4 +23,6 @@ public class PlantDTO
     public int? MaxTemperature { get; set; }
 
     public int? MinTemperature { get; set; }
+
+    public string GreenhouseId { get; set; }
 }

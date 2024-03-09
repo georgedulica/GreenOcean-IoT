@@ -4,10 +4,10 @@ using GreenOcean.Entities;
 
 namespace GreenOcean.Helpers;
 
-public class AutoMapperProfiles : Profile
+public class AutoMapper : Profile
 {
 
-    public AutoMapperProfiles()
+    public AutoMapper()
     {
         CreateMap<Greenhouse, GreenhouseDTO>();
         CreateMap<Plant, PlantDTO>();
