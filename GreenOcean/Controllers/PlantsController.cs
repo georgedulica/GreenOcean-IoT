@@ -105,65 +105,67 @@ public class PlantsController : ControllerBase
         return Ok();
     }
 
-    //[HttpPut("editplant/{id}")]
-    //public async Task<IActionResult> EditPlant(PlantDTO plantDTO, string id)
-    //{
-    //    if (!Guid.TryParse(id, out Guid plantId))
-    //    {
-    //        return BadRequest("Invalid id format");
-    //    }
+    [HttpPut("editplant/{id}")]
+    public async Task<IActionResult> EditPlant(PlantDTO plantDTO, string id)
+    {
+        if (!Guid.TryParse(id, out Guid plantId))
+        {
+            return BadRequest("Invalid id format");
+        }
 
-    //    if (!Guid.TryParse(plantDTO.GreenhouseId, out Guid greenhouseId))
-    //    {
-    //        return BadRequest("Invalid id format");
-    //    }
+        if (!Guid.TryParse(plantDTO.GreenhouseId, out Guid greenhouseId))
+        {
+            return BadRequest("Invalid id format");
+        }
 
-    //    if (plantDTO.Name == null)
-    //    {
-    //        return BadRequest();
-    //    }
+        if (plantDTO.Name == null)
+        {
+            return BadRequest();
+        }
 
-    //    var plant = await dataContext.Plants.FirstOrDefaultAsync(p => p.Id == plantId);
+        var plant = await dataContext.Plants.FirstOrDefaultAsync(p => p.Id == plantId);
+        if (plant == null)
+        {
+            return BadRequest("Invalid id");
+        }
 
-    //    var deletingResult = await photoService.DeletePhoto(plant.PhotoId);
-    //    if (deletingResult.Error != null)
-    //    {
-    //        return BadRequest("The plant cannot be edited");
-    //    }
+        plant.Name = plantDTO.Name;
+        plant.Soil = plantDTO.Soil;
+        plant.Height = plantDTO.Height;
+        plant.Type = plantDTO.Type;
+        plant.MositureLevel = plantDTO.MositureLevel;
+        plant.Humidity = plantDTO.Humidity;
+        plant.MaxTemperature = plantDTO.MaxTemperature;
+        plant.MinTemperature = plantDTO.MinTemperature;
+        plant.GreenhouseId = greenhouseId;
 
-    //    var result = await photoService.AddPhoto(plantDTO.File);
+        await dataContext.SaveChangesAsync();
 
-    //    if (result.Error != null)
-    //    {
-    //        return BadRequest("This photo cannot be edited");
-    //    }
+        return Ok();
+    }
 
-    //    try
-    //    {
-    //        plant.Name = plantDTO.Name;
-    //        plant.Soil = plantDTO.Soil;
-    //        plant.Height = plantDTO.Height;
-    //        plant.Type = plantDTO.Type;
-    //        plant.MositureLevel = plantDTO.MositureLevel;
-    //        plant.Humidity = plantDTO.Humidity;
-    //        plant.MaxTemperature = plantDTO.MaxTemperature;
-    //        plant.MinTemperature = plantDTO.MinTemperature;
-    //        plant.PhotoURL = result.SecureUrl.AbsoluteUri;
-    //        plant.PhotoId = result.PublicId;
-    //        plant.GreenhouseId = greenhouseId;
-    //        await dataContext.SaveChangesAsync();
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        Console.WriteLine(ex);
-    //        await photoService.DeletePhoto(result.PublicId);
-    //    }
-
-    //    return Ok();
-    //}
-
-    [HttpDelete("deletephtoto/id")]
+    [HttpDelete("deleteplant/{id}")]
     public async Task<IActionResult> DeletePlant(string id)
+    {
+        if (!Guid.TryParse(id, out Guid plantId))
+        {
+            return BadRequest("Invalid id format");
+        }
+
+        var plant = await dataContext.Plants.FirstOrDefaultAsync(p => p.Id == plantId);
+        if (plant == null)
+        {
+            return BadRequest("Invalid id");
+        }
+
+        dataContext.Remove(plant);
+        await dataContext.SaveChangesAsync();
+
+        return Ok();
+    }
+
+    [HttpDelete("deletephtoto/{id}")]
+    public async Task<IActionResult> DeletePhoto(string id)
     {
         if (!Guid.TryParse(id, out Guid plantId))
         {
