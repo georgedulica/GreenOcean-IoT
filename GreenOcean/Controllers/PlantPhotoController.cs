@@ -10,7 +10,7 @@ namespace GreenOcean.Controllers;
 
 [ApiController]
 [Authorize]
-[Route("plantphotos")]
+[Route("plantphoto")]
 public class PlantPhotoController : ControllerBase
 {
     private readonly DataContext dataContext;
@@ -38,16 +38,37 @@ public class PlantPhotoController : ControllerBase
             return BadRequest("Invalid id");
         }
 
-        var result = await photoService.AddPhoto(file);
-        if(result.Error != null)
+        var deletingResult = await photoService.DeletePhoto(plant.PhotoId);
+        if (deletingResult.Error != null)
         {
-            return BadRequest("The photo cannot be added");
+            return BadRequest("The plant cannot be uploaded");
         }
 
-        plant.PhotoURL = result.SecureUrl.AbsoluteUri;
-        plant.PhotoId = result.PublicId;
+        var result = await photoService.AddPhoto(file);
+        if (result.Error != null)
+        {
+            plant.PhotoURL = config.Value.URL;
+            plant.PhotoId = config.Value.PublicId;
+            await dataContext.SaveChangesAsync();
 
-        await dataContext.SaveChangesAsync();
+            return BadRequest("The photo cannot be uploaded");
+        }
+
+        try
+        {
+            plant.PhotoURL = result.SecureUrl.AbsoluteUri;
+            plant.PhotoId = result.PublicId;
+            await dataContext.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            plant.PhotoURL = config.Value.URL;
+            plant.PhotoId = config.Value.PublicId;
+            await dataContext.SaveChangesAsync();
+
+            Console.WriteLine(ex);
+            return BadRequest("The photo cannot be deleted");
+        }
 
         return Ok();
     }
@@ -64,6 +85,11 @@ public class PlantPhotoController : ControllerBase
         if (plant == null)
         {
             return BadRequest();
+        }
+
+        if (string.Equals(plant.PhotoURL, config.Value.URL) && string.Equals(plant.PhotoId, config.Value.PublicId))
+        {
+            return BadRequest("You cannot delete default picture");
         }
 
         var deletingResult = await photoService.DeletePhoto(plant.PhotoId);

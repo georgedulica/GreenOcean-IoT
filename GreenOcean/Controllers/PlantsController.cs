@@ -158,8 +158,26 @@ public class PlantsController : ControllerBase
             return BadRequest("Invalid id");
         }
 
-        dataContext.Remove(plant);
-        await dataContext.SaveChangesAsync();
+        var deletingResult = await photoService.DeletePhoto(plant.PhotoId);
+        if (deletingResult.Error != null)
+        {
+            return BadRequest("The plant cannot be deleted");
+        }
+
+        try
+        {
+            dataContext.Remove(plant);
+            await dataContext.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            plant.PhotoURL = config.Value.URL;
+            plant.PhotoId = config.Value.PublicId;
+            await dataContext.SaveChangesAsync();
+
+            Console.WriteLine(ex);
+            return BadRequest("The plant cannot be deleted");
+        }
 
         return Ok();
     }
