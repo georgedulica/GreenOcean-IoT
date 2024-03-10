@@ -12,7 +12,7 @@ using Microsoft.Extensions.Options;
 namespace GreenOcean.Controllers;
 
 [ApiController]
-
+[Authorize]
 [Route("plants")]
 public class PlantsController : ControllerBase
 {
@@ -159,28 +159,6 @@ public class PlantsController : ControllerBase
         }
 
         dataContext.Remove(plant);
-        await dataContext.SaveChangesAsync();
-
-        return Ok();
-    }
-
-    [HttpDelete("deletephtoto/{id}")]
-    public async Task<IActionResult> DeletePhoto(string id)
-    {
-        if (!Guid.TryParse(id, out Guid plantId))
-        {
-            return BadRequest("Invalid id format");
-        }
-
-        var plant = await dataContext.Plants.FirstOrDefaultAsync(p => p.Id == plantId);
-
-        var deletingResult = await photoService.DeletePhoto(plant.PhotoId);
-        if (deletingResult.Error != null)
-        {
-            return BadRequest("The plant cannot be edited");
-        }
-
-        dataContext.Plants.Remove(plant);
         await dataContext.SaveChangesAsync();
 
         return Ok();
