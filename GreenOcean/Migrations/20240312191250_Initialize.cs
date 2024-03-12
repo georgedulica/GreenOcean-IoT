@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GreenOcean.Migrations
 {
     /// <inheritdoc />
-    public partial class TablePlants : Migration
+    public partial class Initialize : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -83,6 +83,7 @@ namespace GreenOcean.Migrations
                     Humidity = table.Column<int>(type: "int", nullable: true),
                     MaxTemperature = table.Column<int>(type: "int", nullable: true),
                     MinTemperature = table.Column<int>(type: "int", nullable: true),
+                    PhotoId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     GreenhouseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -90,6 +91,27 @@ namespace GreenOcean.Migrations
                     table.PrimaryKey("PK_Plants", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Plants_Greenhouses_GreenhouseId",
+                        column: x => x.GreenhouseId,
+                        principalTable: "Greenhouses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Systems",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    GreenhouseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Systems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Systems_Greenhouses_GreenhouseId",
                         column: x => x.GreenhouseId,
                         principalTable: "Greenhouses",
                         principalColumn: "Id",
@@ -111,6 +133,11 @@ namespace GreenOcean.Migrations
                 name: "IX_Plants_GreenhouseId",
                 table: "Plants",
                 column: "GreenhouseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Systems_GreenhouseId",
+                table: "Systems",
+                column: "GreenhouseId");
         }
 
         /// <inheritdoc />
@@ -121,6 +148,9 @@ namespace GreenOcean.Migrations
 
             migrationBuilder.DropTable(
                 name: "Plants");
+
+            migrationBuilder.DropTable(
+                name: "Systems");
 
             migrationBuilder.DropTable(
                 name: "Greenhouses");

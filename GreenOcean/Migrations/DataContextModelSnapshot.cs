@@ -119,6 +119,32 @@ namespace GreenOcean.Migrations
                     b.ToTable("Plants");
                 });
 
+            modelBuilder.Entity("GreenOcean.Entities.System", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("GreenhouseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GreenhouseId");
+
+                    b.ToTable("Systems");
+                });
+
             modelBuilder.Entity("GreenOcean.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -187,9 +213,22 @@ namespace GreenOcean.Migrations
                     b.Navigation("Greenhouse");
                 });
 
+            modelBuilder.Entity("GreenOcean.Entities.System", b =>
+                {
+                    b.HasOne("GreenOcean.Entities.Greenhouse", "Greenhouse")
+                        .WithMany("Systems")
+                        .HasForeignKey("GreenhouseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Greenhouse");
+                });
+
             modelBuilder.Entity("GreenOcean.Entities.Greenhouse", b =>
                 {
                     b.Navigation("Plants");
+
+                    b.Navigation("Systems");
                 });
 
             modelBuilder.Entity("GreenOcean.Entities.User", b =>

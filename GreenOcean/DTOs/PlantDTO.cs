@@ -22,5 +22,5 @@ public class PlantDTO
 
     public int? MinTemperature { get; set; }
 
-    public string GreenhouseId { get; set; }
+    public Guid GreenhouseId { get; set; }
 }

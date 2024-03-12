@@ -23,14 +23,9 @@ public class ValidateAccountController : ControllerBase
     }
 
     [HttpPost("confirmcode/{id}")]
-    public async Task<IActionResult> ValidateAccount(CodeDTO codeDTO, string id)
+    public async Task<IActionResult> ValidateAccount(CodeDTO codeDTO, Guid id)
     {
-        if (!Guid.TryParse(id, out Guid userId))
-        {
-            return BadRequest("Invalid id format");
-        }
-
-        var code = await dataContext.Codes.FirstOrDefaultAsync(c => c.UserId == userId);
+        var code = await dataContext.Codes.FirstOrDefaultAsync(c => c.UserId == id);
         if (code.GeneratedCode != codeDTO.Code)
         {
             return BadRequest("The code is invalid");
@@ -42,20 +37,15 @@ public class ValidateAccountController : ControllerBase
         var validationToken = new AccountValidationToken
         {
             Name = "validate",
-            Token = tokenService.CreateToken(userId.ToString())
+            Token = tokenService.CreateToken(id.ToString())
         };
 
         return Ok(validationToken);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> ValidateAccount(ValidateAccountDTO validateAccountDTO, string id)
+    public async Task<IActionResult> ValidateAccount(ValidateAccountDTO validateAccountDTO, Guid id)
     {
-        if (!Guid.TryParse(id, out Guid userId))
-        {
-            return BadRequest("Invalid id format");
-        }
-
         if (!string.Equals(validateAccountDTO.Password, validateAccountDTO.ConfirmedPassword))
         {
             return BadRequest("Passwords does not match");
@@ -67,7 +57,7 @@ public class ValidateAccountController : ControllerBase
             return BadRequest("Username exists");
         }
 
-        var user = await dataContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        var user = await dataContext.Users.FirstOrDefaultAsync(u => u.Id == id);
         
         var hash = settingPassword.EncryptPassword(validateAccountDTO.Password, out var salt);
         
@@ -78,18 +68,5 @@ public class ValidateAccountController : ControllerBase
         await dataContext.SaveChangesAsync();
         
         return Ok();
-    }
-
-    private bool UsernameExists(string username)
-    {
-        var user = dataContext.Users.Any(u => string.Equals(username, u.Username));
-        if (user == true)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
     }
 };

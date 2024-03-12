@@ -79,22 +79,17 @@ public class ResetingPasswordController : ControllerBase
     }    
     
     [HttpPost("confirmcode/changepassword/{id}")]
-    public async Task<IActionResult> ChangePassword(PasswordDTO passwordDTO, string id)
+    public async Task<IActionResult> ChangePassword(PasswordDTO passwordDTO, Guid id)
     {
         var password = passwordDTO.Password;
         var confirmedPassword = passwordDTO.ConfirmedPassword;
-
-        if (!Guid.TryParse(id, out Guid userId))
-        {
-            return BadRequest("Invalid id format");
-        }
 
         if (!string.Equals(password, confirmedPassword))
         {
             return BadRequest();
         }
 
-        var user = await dataContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        var user = await dataContext.Users.FirstOrDefaultAsync(u => u.Id == id);
         var hash = settingPassword.EncryptPassword(password, out var salt);
         
         user.Password = hash;
@@ -113,9 +108,9 @@ public class ResetingPasswordController : ControllerBase
         return randomNumber;
     }
 
-    private async Task<(Guid?, bool)> CompareCode(int recievedCode)
+    private async Task<(Guid?, bool)> CompareCode(int receivedCode)
     {
-        var code = await dataContext.Codes.FirstOrDefaultAsync(c => c.GeneratedCode == recievedCode);
+        var code = await dataContext.Codes.FirstOrDefaultAsync(c => c.GeneratedCode == receivedCode);
         var id = code.UserId;
 
         if (code != null)

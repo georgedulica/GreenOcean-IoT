@@ -1,4 +1,6 @@
-﻿namespace GreenOcean.Entities;
+﻿using Microsoft.Extensions.Hosting;
+
+namespace GreenOcean.Entities;
 
 public class Greenhouse
 {
@@ -17,4 +19,6 @@ public class Greenhouse
     public User User { get; set; } = null!;
 
     public ICollection<Plant> Plants { get; } = new List<Plant>();
+
+    public ICollection<System> Systems { get; } = new List<System>();
 }

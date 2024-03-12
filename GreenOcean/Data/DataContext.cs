@@ -1,5 +1,6 @@
 ﻿using GreenOcean.Entities;
 using Microsoft.EntityFrameworkCore;
+using IoTSystem = GreenOcean.Entities.System;
 
 namespace GreenOcean.Data;
 
@@ -16,4 +17,6 @@ public class DataContext : DbContext
     public DbSet<Greenhouse> Greenhouses { get; set; }
 
     public DbSet<Plant> Plants { get; set; }
+
+    public DbSet<IoTSystem> Systems { get; set; }
 }

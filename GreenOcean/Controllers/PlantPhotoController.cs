@@ -25,14 +25,9 @@ public class PlantPhotoController : ControllerBase
     }
 
     [HttpPost("changephtoto/{id}")]
-    public async Task<IActionResult> ChangePhoto(IFormFile file, string id)
+    public async Task<IActionResult> ChangePhoto(IFormFile file, Guid id)
     {
-        if (!Guid.TryParse(id, out Guid plantId))
-        {
-            return BadRequest("Invalid id format");
-        }
-
-        var plant = await dataContext.Plants.FirstOrDefaultAsync(p => p.Id == plantId);
+        var plant = await dataContext.Plants.FirstOrDefaultAsync(p => p.Id == id);
         if (plant == null)
         {
             return BadRequest("Invalid id");
@@ -74,14 +69,9 @@ public class PlantPhotoController : ControllerBase
     }
 
     [HttpDelete("deletephtoto/{id}")]
-    public async Task<IActionResult> DeletePhoto(string id)
+    public async Task<IActionResult> DeletePhoto(Guid id)
     {
-        if (!Guid.TryParse(id, out Guid plantId))
-        {
-            return BadRequest("Invalid id format");
-        }
-
-        var plant = await dataContext.Plants.FirstOrDefaultAsync(p => p.Id == plantId);
+        var plant = await dataContext.Plants.FirstOrDefaultAsync(p => p.Id == id);
         if (plant == null)
         {
             return BadRequest();
