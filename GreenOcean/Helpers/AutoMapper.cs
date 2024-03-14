@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using GreenOcean.DTOs;
 using GreenOcean.Entities;
-using SystemIoT = GreenOcean.Entities.System;
+using RegisteredSystem = GreenOcean.Entities.System;
 
 namespace GreenOcean.Helpers;
 
@@ -14,7 +14,8 @@ public class AutoMapper : Profile
         CreateMap<GreenhouseDTO, Greenhouse>();
         CreateMap<Plant, PlantDTO>();
         CreateMap<PlantDTO, Plant>();
-        CreateMap<SystemIoT, SystemDTO>();
-        CreateMap<SystemDTO, SystemIoT>();
+        CreateMap<IoTSystem, IoTSystemDTO>();
+        CreateMap<IoTSystemDTO, IoTSystem>();
+        CreateMap<SystemDTO, RegisteredSystem>();
     }
 }

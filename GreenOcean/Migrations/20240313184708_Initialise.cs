@@ -6,11 +6,23 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GreenOcean.Migrations
 {
     /// <inheritdoc />
-    public partial class Initialize : Migration
+    public partial class Initialise : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Systems",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Systems", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
@@ -70,6 +82,34 @@ namespace GreenOcean.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "IoTSystems",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SystemId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    GreenhouseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IoTSystems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_IoTSystems_Greenhouses_GreenhouseId",
+                        column: x => x.GreenhouseId,
+                        principalTable: "Greenhouses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_IoTSystems_Systems_SystemId",
+                        column: x => x.SystemId,
+                        principalTable: "Systems",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Plants",
                 columns: table => new
                 {
@@ -97,27 +137,6 @@ namespace GreenOcean.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Systems",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    GreenhouseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Systems", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Systems_Greenhouses_GreenhouseId",
-                        column: x => x.GreenhouseId,
-                        principalTable: "Greenhouses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Codes_UserId",
                 table: "Codes",
@@ -130,13 +149,19 @@ namespace GreenOcean.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Plants_GreenhouseId",
-                table: "Plants",
+                name: "IX_IoTSystems_GreenhouseId",
+                table: "IoTSystems",
                 column: "GreenhouseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Systems_GreenhouseId",
-                table: "Systems",
+                name: "IX_IoTSystems_SystemId",
+                table: "IoTSystems",
+                column: "SystemId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Plants_GreenhouseId",
+                table: "Plants",
                 column: "GreenhouseId");
         }
 
@@ -145,6 +170,9 @@ namespace GreenOcean.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Codes");
+
+            migrationBuilder.DropTable(
+                name: "IoTSystems");
 
             migrationBuilder.DropTable(
                 name: "Plants");

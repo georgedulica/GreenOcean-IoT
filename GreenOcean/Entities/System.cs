@@ -1,4 +1,4 @@
-﻿using System.Reflection.Metadata;
+﻿using IoTSystem = GreenOcean.Entities.IoTSystem;
 
 namespace GreenOcean.Entities;
 
@@ -8,11 +8,5 @@ public class System
 
     public string Name { get; set; }
 
-    public DateTime Timestamp {get; set;}
-
-    public string? Status { get; set; }
-
-    public Guid GreenhouseId { get; set; }
-
-    public Greenhouse Greenhouse { get; set; } = null!;
+    public IoTSystem? IoTSystem { get; set; }
 }

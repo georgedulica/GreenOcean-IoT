@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GreenOcean.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240312191250_Initialize")]
-    partial class Initialize
+    [Migration("20240313184708_Initialise")]
+    partial class Initialise
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -74,6 +74,38 @@ namespace GreenOcean.Migrations
                     b.ToTable("Greenhouses");
                 });
 
+            modelBuilder.Entity("GreenOcean.Entities.IoTSystem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("GreenhouseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("SystemId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GreenhouseId");
+
+                    b.HasIndex("SystemId")
+                        .IsUnique();
+
+                    b.ToTable("IoTSystems");
+                });
+
             modelBuilder.Entity("GreenOcean.Entities.Plant", b =>
                 {
                     b.Property<Guid>("Id")
@@ -128,22 +160,11 @@ namespace GreenOcean.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("GreenhouseId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("datetime2");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("GreenhouseId");
 
                     b.ToTable("Systems");
                 });
@@ -205,6 +226,25 @@ namespace GreenOcean.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("GreenOcean.Entities.IoTSystem", b =>
+                {
+                    b.HasOne("GreenOcean.Entities.Greenhouse", "Greenhouse")
+                        .WithMany("IoTSystems")
+                        .HasForeignKey("GreenhouseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GreenOcean.Entities.System", "System")
+                        .WithOne("IoTSystem")
+                        .HasForeignKey("GreenOcean.Entities.IoTSystem", "SystemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Greenhouse");
+
+                    b.Navigation("System");
+                });
+
             modelBuilder.Entity("GreenOcean.Entities.Plant", b =>
                 {
                     b.HasOne("GreenOcean.Entities.Greenhouse", "Greenhouse")
@@ -216,22 +256,16 @@ namespace GreenOcean.Migrations
                     b.Navigation("Greenhouse");
                 });
 
-            modelBuilder.Entity("GreenOcean.Entities.System", b =>
-                {
-                    b.HasOne("GreenOcean.Entities.Greenhouse", "Greenhouse")
-                        .WithMany("Systems")
-                        .HasForeignKey("GreenhouseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Greenhouse");
-                });
-
             modelBuilder.Entity("GreenOcean.Entities.Greenhouse", b =>
                 {
-                    b.Navigation("Plants");
+                    b.Navigation("IoTSystems");
 
-                    b.Navigation("Systems");
+                    b.Navigation("Plants");
+                });
+
+            modelBuilder.Entity("GreenOcean.Entities.System", b =>
+                {
+                    b.Navigation("IoTSystem");
                 });
 
             modelBuilder.Entity("GreenOcean.Entities.User", b =>

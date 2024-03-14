@@ -166,6 +166,7 @@ public class GreenhouseController : ControllerBase
         }
 
         var greenhouse = mapper.Map<GreenhouseDTO, Greenhouse>(greenhouseDTO);
+        greenhouse.UserId = user.Id;
 
         await dataContext.Greenhouses.AddAsync(greenhouse);
         await dataContext.SaveChangesAsync();
