@@ -1,3 +1,7 @@
+using Amazon;
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
+using Amazon.Runtime;
 using GreenOcean.Data;
 using GreenOcean.Helpers;
 using GreenOcean.Interfaces;
@@ -17,18 +21,11 @@ var configuration = new ConfigurationBuilder()
     .Build();
 
 
-// Email Configuration
-var emailSettings = new EmailSettings();
-configuration.GetSection("EmailSettings").Bind(emailSettings);
-
-// Token Configuration
-var tokenSettings = new TokenSettings();
-configuration.GetSection("TokenSettings").Bind(tokenSettings);
-
-// Cloudinary Settings
+// Configurations
+var emailSettings = configuration.GetSection("EmailSettings").Get<EmailSettings>();
+var tokenSettings = configuration.GetSection("TokenSettings").Get<TokenSettings>();
+var awsSettings = configuration.GetSection("AWSSettings").Get<AWSSettings>();
 builder.Services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
-
-// Basic photo
 builder.Services.Configure<BasicPhotoSettings>(configuration.GetSection("BasicPhoto"));
 
 // Add services to the container.
@@ -51,6 +48,15 @@ builder.Services.AddScoped<ITokenService>(serviceProvider => {
 });
 builder.Services.AddScoped<ISettingPassword, SettingPassword>();
 builder.Services.AddScoped<IPhotoService, PhotoService>();
+
+var credentials = new BasicAWSCredentials(awsSettings.AccesKey, awsSettings.SecretAccesKey);
+var config = new AmazonDynamoDBConfig()
+{
+    RegionEndpoint = RegionEndpoint.USEast1
+};
+var client = new AmazonDynamoDBClient(credentials, config);
+builder.Services.AddSingleton<IAmazonDynamoDB>(client);
+builder.Services.AddSingleton<IDynamoDBContext, DynamoDBContext>();
 
 // Automapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
