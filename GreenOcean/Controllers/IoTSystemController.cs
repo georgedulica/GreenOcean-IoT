@@ -53,10 +53,18 @@ public class IoTSystemController : ControllerBase
     {
 
         var ioTSystem = mapper.Map<IoTSystemDTO, IoTSystem>(ioTSystemDTO);
-        await dataContext.IoTSystems.AddAsync(ioTSystem);
-        await dataContext.SaveChangesAsync();
-
-        return Ok();
+        ioTSystem.Timestamp = DateTime.UtcNow.Date;
+        try
+        {
+            await dataContext.IoTSystems.AddAsync(ioTSystem);
+            await dataContext.SaveChangesAsync();
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            return BadRequest();
+        }
     }
 
     [HttpPut("editSystem/{id}")]
