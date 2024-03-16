@@ -1,4 +1,5 @@
-﻿using RegisteredSystem = GreenOcean.Entities.System;
+﻿using Microsoft.Extensions.Hosting;
+using RegisteredSystem = GreenOcean.Entities.System;
 
 namespace GreenOcean.Entities;
 
@@ -19,4 +20,6 @@ public class IoTSystem
     public Guid GreenhouseId { get; set; }
 
     public Greenhouse Greenhouse { get; set; } = null!;
+
+    public ICollection<SensorData> SensorData { get; } = new List<SensorData>();
 }
