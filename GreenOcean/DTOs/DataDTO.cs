@@ -4,7 +4,7 @@ namespace GreenOcean.DTOs;
 
 public class DataDTO
 {
-    public string SystemId { get; set; }
+    public string IoTSystemId { get; set; }
 
     public string Timestamp { get; set; }
 

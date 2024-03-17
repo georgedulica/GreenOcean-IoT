@@ -19,5 +19,6 @@ public class AutoMapper : Profile
         CreateMap<IoTSystemDTO, IoTSystem>();
         CreateMap<SystemDTO, RegisteredSystem>();
         CreateMap<DynamoDBData, DataDTO>();
+        CreateMap<SensorData, DataDTO>();
     }
 }
