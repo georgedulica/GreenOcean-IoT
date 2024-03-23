@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GreenOcean.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240313184708_Initialise")]
-    partial class Initialise
+    [Migration("20240317123557_initialization")]
+    partial class initialization
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -154,6 +154,39 @@ namespace GreenOcean.Migrations
                     b.ToTable("Plants");
                 });
 
+            modelBuilder.Entity("GreenOcean.Entities.SensorData", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<float>("Humidity")
+                        .HasColumnType("real");
+
+                    b.Property<Guid>("IoTSystemId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<float>("LightLevel")
+                        .HasColumnType("real");
+
+                    b.Property<string>("SoilMoisture")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("Temperature")
+                        .HasColumnType("real");
+
+                    b.Property<string>("Timestamp")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IoTSystemId");
+
+                    b.ToTable("SensorData");
+                });
+
             modelBuilder.Entity("GreenOcean.Entities.System", b =>
                 {
                     b.Property<Guid>("Id")
@@ -256,11 +289,27 @@ namespace GreenOcean.Migrations
                     b.Navigation("Greenhouse");
                 });
 
+            modelBuilder.Entity("GreenOcean.Entities.SensorData", b =>
+                {
+                    b.HasOne("GreenOcean.Entities.IoTSystem", "IoTSystem")
+                        .WithMany("SensorData")
+                        .HasForeignKey("IoTSystemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("IoTSystem");
+                });
+
             modelBuilder.Entity("GreenOcean.Entities.Greenhouse", b =>
                 {
                     b.Navigation("IoTSystems");
 
                     b.Navigation("Plants");
+                });
+
+            modelBuilder.Entity("GreenOcean.Entities.IoTSystem", b =>
+                {
+                    b.Navigation("SensorData");
                 });
 
             modelBuilder.Entity("GreenOcean.Entities.System", b =>

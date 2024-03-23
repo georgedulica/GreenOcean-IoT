@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Hosting;
-using RegisteredSystem = GreenOcean.Entities.System;
+﻿using RegisteredSystem = GreenOcean.Entities.System;
 
 namespace GreenOcean.Entities;
 
