@@ -2,5 +2,5 @@
 
 public interface IEmailService
 {
-    public bool SendRegistrationEmail(Guid? id, string name, string email, string code, string path);
+    public bool SendEmail(string recipientEmailAddress, string emailBody, string subject);
 }

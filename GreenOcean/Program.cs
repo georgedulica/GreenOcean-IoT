@@ -27,6 +27,8 @@ var tokenSettings = configuration.GetSection("TokenSettings").Get<TokenSettings>
 var awsSettings = configuration.GetSection("AWSSettings").Get<AWSSettings>();
 builder.Services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
 builder.Services.Configure<BasicPhotoSettings>(configuration.GetSection("BasicPhoto"));
+builder.Services.Configure<EmailPathSettings>(configuration.GetSection("EmailPathSettings"));
+builder.Services.Configure<EmailSubjectSettings>(configuration.GetSection("EmailSubjectSettings"));
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -48,6 +50,8 @@ builder.Services.AddScoped<ITokenService>(serviceProvider => {
 });
 builder.Services.AddScoped<ISettingPassword, SettingPassword>();
 builder.Services.AddScoped<IPhotoService, PhotoService>();
+builder.Services.AddScoped<ISensorDataVerification, SensorDataVerification>();
+//builder.Services.AddHostedService<SensorDataHostedService>();
 
 var credentials = new BasicAWSCredentials(awsSettings.AccesKey, awsSettings.SecretAccesKey);
 var config = new AmazonDynamoDBConfig()
@@ -74,6 +78,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 var app = builder.Build();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -83,7 +88,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
 
-// Veirfy the token
+// Verify the token
 app.UseAuthentication();
 
 // Verify the permissions of the token

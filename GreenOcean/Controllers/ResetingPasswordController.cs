@@ -2,9 +2,11 @@
 using GreenOcean.DTOs;
 using GreenOcean.Entities;
 using GreenOcean.Interfaces;
+using GreenOcean.Settings;
 using GreenOcean.Tokens;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace GreenOcean.Controllers;
 
@@ -16,14 +18,19 @@ public class ResetingPasswordController : ControllerBase
     private readonly IEmailService emailService;
     private readonly ITokenService tokenService;
     private readonly ISettingPassword settingPassword;
+    private readonly IOptions<EmailPathSettings> emailPathSettings;
+    private readonly IOptions<EmailSubjectSettings> emailSubjectSettings;
 
     public ResetingPasswordController(DataContext dataContext, ITokenService tokenService, 
-        IEmailService emailService, ISettingPassword settingPassword)
+        IEmailService emailService, ISettingPassword settingPassword, IOptions<EmailPathSettings> emailPathSettings,
+        IOptions<EmailSubjectSettings> emailSubjectSettings)
     {
         this.dataContext = dataContext;
         this.tokenService = tokenService;
         this.emailService = emailService;
         this.settingPassword = settingPassword;
+        this.emailPathSettings = emailPathSettings;
+        this.emailSubjectSettings = emailSubjectSettings;
     }
 
     [HttpPost]
@@ -46,12 +53,17 @@ public class ResetingPasswordController : ControllerBase
         await dataContext.Codes.AddAsync(code);
         await dataContext.SaveChangesAsync();
 
-        var sentEmail = emailService
-            .SendRegistrationEmail(null, user.FirstName, user.Email, generatedCode.ToString(), "Templates/ResetPasswordTemplateEmailHTML.html");
+        string emailTemplate = System.IO.File.ReadAllText(emailPathSettings.Value.PasswordResetEmailPath);
+        string emailBody = emailTemplate.Replace("{name}", user.FirstName)
+                                        .Replace("{code}", generatedCode.ToString())
+                                        .Replace("{id}", user.Id.ToString());
+
+        var sentEmail = emailService.SendEmail(user.Email, emailBody, emailSubjectSettings.Value.PasswordResetEmailSubject);
         if (sentEmail == false)
         {
             dataContext.Codes.Remove(code);
             await dataContext.SaveChangesAsync();
+
             return BadRequest();
         }
 

@@ -14,21 +14,17 @@ public class EmailService : IEmailService
         this.emailSettings = emailSettings;
     }
 
-    public bool SendRegistrationEmail(Guid? id, string name, string email, string code, string path)
+    public bool SendEmail(string recipientEmailAddress, string emailBody, string subject)
     {
         try
         { 
-            string emailTemplate = File.ReadAllText(path);
-            string emailBody = emailTemplate.Replace("{name}", name)
-                                            .Replace("{code}", code)
-                                            .Replace("{id}", id.ToString());
-
-            var mailMessage = new MailMessage();
-            mailMessage.From = new MailAddress(emailSettings.FromEmail);
-            mailMessage.Subject = "Inregistrare";
-            mailMessage.To.Add(new MailAddress(email));
-            mailMessage.Body = emailBody;
-            mailMessage.IsBodyHtml = true;
+            var senderEmail = new MailMessage();
+            senderEmail.From = new MailAddress(emailSettings.FromEmail);
+            senderEmail.Subject = subject;
+            var recipientEmail = new MailAddress(recipientEmailAddress);
+            senderEmail.To.Add(recipientEmail);
+            senderEmail.Body = emailBody;
+            senderEmail.IsBodyHtml = true;
 
             var smtpClient = new SmtpClient("smtp.gmail.com")
             {
@@ -37,7 +33,7 @@ public class EmailService : IEmailService
                 EnableSsl = true
             };
 
-            smtpClient.Send(mailMessage);
+            smtpClient.Send(senderEmail);
         }
         catch (Exception ex)
         {

@@ -2,7 +2,9 @@
 using GreenOcean.DTOs;
 using GreenOcean.Entities;
 using GreenOcean.Interfaces;
+using GreenOcean.Settings;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace GreenOcean.Controllers;
 
@@ -10,12 +12,17 @@ namespace GreenOcean.Controllers;
 public class CreatingUserController : ControllerBase
 {
     private readonly DataContext dataContext;
-    private readonly IEmailService createUser;
+    private readonly IEmailService emailService;
+    private readonly IOptions<EmailPathSettings> emailPathSettings;
+    private readonly IOptions<EmailSubjectSettings> emailSubjectSettings;
 
-    public CreatingUserController(DataContext context, IEmailService createUser)
+    public CreatingUserController(DataContext context, IEmailService emailService,
+        IOptions<EmailPathSettings> emailPathSettings, IOptions<EmailSubjectSettings> emailSubjectSettings)
     {
         this.dataContext = context;
-        this.createUser = createUser;
+        this.emailService = emailService;
+        this.emailPathSettings = emailPathSettings;
+        this.emailSubjectSettings = emailSubjectSettings;
     }
 
     [HttpPost("createUser")]
@@ -41,7 +48,13 @@ public class CreatingUserController : ControllerBase
         var userId = user.Id;
         var code = await SaveCode(userId);
         var generatedCode = code.GeneratedCode.ToString();
-        var sentEmail = createUser.SendRegistrationEmail(userId, userDTO.FirstName, userDTO.Email, generatedCode, "Templates/RegistrationEmailHTML.html");
+
+        string emailTemplate = System.IO.File.ReadAllText(emailPathSettings.Value.RegistrationEmailPath);
+        string emailBody = emailTemplate.Replace("{name}", user.FirstName)
+                                        .Replace("{code}", generatedCode)
+                                        .Replace("{id}", userId.ToString());
+
+        var sentEmail = emailService.SendEmail(user.Email, emailBody, emailSubjectSettings.Value.RegistrationEmailSubject);
         if (sentEmail == false)
         {
             dataContext.Users.Remove(user);

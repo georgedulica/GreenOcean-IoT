@@ -1,4 +1,6 @@
-﻿namespace GreenOcean.Entities;
+﻿using System.Runtime.InteropServices;
+
+namespace GreenOcean.Entities;
 
 public class Plant
 {
@@ -8,19 +10,17 @@ public class Plant
 
     public string? Soil { get; set; }
 
-    public int? Height { get; set; }
+    public float? Height { get; set; }
 
     public string? Type { get; set; }
 
     public string? PhotoURL { get; set; }
 
-    public int? MositureLevel { get; set; }
+    public float MositureLevel { get; set; }
 
-    public int? Humidity { get; set; }
+    public float Humidity { get; set; }
 
-    public int? MaxTemperature { get; set; }
-
-    public int? MinTemperature { get; set; }
+    public float Temperature { get; set; }
 
     public string PhotoId { get; set; }
 

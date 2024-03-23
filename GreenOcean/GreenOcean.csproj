@@ -28,10 +28,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Templates\ResetPasswordTemplateEmailHTML.html">
+    <None Update="Templates\PasswordResetEmail.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Templates\RegistrationEmailHTML.html">
+    <None Update="Templates\RegistrationEmail.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
