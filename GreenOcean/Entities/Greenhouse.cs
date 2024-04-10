@@ -21,4 +21,6 @@ public class Greenhouse
     public ICollection<Plant> Plants { get; } = new List<Plant>();
 
     public ICollection<IoTSystem> IoTSystems { get; } = new List<IoTSystem>();
+
+    public ICollection<Process> Posts { get; } = new List<Process>();
 }

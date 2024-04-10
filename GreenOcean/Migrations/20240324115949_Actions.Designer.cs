@@ -4,6 +4,7 @@ using GreenOcean.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GreenOcean.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240324115949_Actions")]
+    partial class Actions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,33 @@ namespace GreenOcean.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("GreenOcean.Entities.Action", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ActionName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("GreenhouseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GreenhouseId");
+
+                    b.ToTable("Actions");
+                });
 
             modelBuilder.Entity("GreenOcean.Entities.Code", b =>
                 {
@@ -166,33 +196,6 @@ namespace GreenOcean.Migrations
                     b.ToTable("Plants");
                 });
 
-            modelBuilder.Entity("GreenOcean.Entities.Process", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("GreenhouseId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ProcessName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GreenhouseId");
-
-                    b.ToTable("Processes");
-                });
-
             modelBuilder.Entity("GreenOcean.Entities.SensorData", b =>
                 {
                     b.Property<Guid>("Id")
@@ -276,6 +279,17 @@ namespace GreenOcean.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("GreenOcean.Entities.Action", b =>
+                {
+                    b.HasOne("GreenOcean.Entities.Greenhouse", "Greenhouse")
+                        .WithMany("Posts")
+                        .HasForeignKey("GreenhouseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Greenhouse");
+                });
+
             modelBuilder.Entity("GreenOcean.Entities.Code", b =>
                 {
                     b.HasOne("GreenOcean.Entities.User", "User")
@@ -321,17 +335,6 @@ namespace GreenOcean.Migrations
                 {
                     b.HasOne("GreenOcean.Entities.Greenhouse", "Greenhouse")
                         .WithMany("Plants")
-                        .HasForeignKey("GreenhouseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Greenhouse");
-                });
-
-            modelBuilder.Entity("GreenOcean.Entities.Process", b =>
-                {
-                    b.HasOne("GreenOcean.Entities.Greenhouse", "Greenhouse")
-                        .WithMany("Posts")
                         .HasForeignKey("GreenhouseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

@@ -20,5 +20,7 @@ public class AutoMapper : Profile
         CreateMap<SystemDTO, RegisteredSystem>();
         CreateMap<DynamoDBData, DataDTO>();
         CreateMap<SensorData, DataDTO>();
+        CreateMap<Process, ProcessDTO>();
+        CreateMap<ProcessDTO, Process>();
     }
 }

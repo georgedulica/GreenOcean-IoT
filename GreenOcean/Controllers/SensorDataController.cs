@@ -24,7 +24,7 @@ public class SensorDataController : ControllerBase
     [HttpGet("getdata/{timestamp}/{id}")]
     public async Task<IEnumerable<DataDTO>> GetData(DateTime timestamp, Guid id)
     {
-        var date = timestamp.ToString("yyyy-MM-dd"); // Convert the input timestamp to string
+        var date = timestamp.ToString("yyyy-MM-dd");
 
         var data = await dataContext.SensorData
             .Where(d => d.IoTSystemId == id)

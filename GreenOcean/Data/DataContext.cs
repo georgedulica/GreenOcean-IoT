@@ -23,4 +23,6 @@ public class DataContext : DbContext
     public DbSet<RegisteredSystem> Systems { get; set; }
 
     public DbSet<SensorData> SensorData { get; set; }
+
+    public DbSet<Process> Processes { get; set; }
 }
