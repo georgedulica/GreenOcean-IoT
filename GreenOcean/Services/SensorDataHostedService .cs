@@ -16,7 +16,7 @@ public class SensorDataHostedService : BackgroundService
             var time = DateTime.UtcNow;
             
             // Wait for 30 minutes before checking again
-            await Task.Delay(TimeSpan.FromMinutes(30), stoppingToken);
+            await Task.Delay(TimeSpan.FromSeconds(2), stoppingToken);
 
             using (var scope = _serviceProvider.CreateScope())
             {

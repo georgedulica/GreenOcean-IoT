@@ -50,6 +50,12 @@ public class GreenhouseController : ControllerBase
     [HttpPost("creategreenhouse/{username}")]
     public async Task<IActionResult> CreateGreenhouse(GreenhouseDTO greenhouseDTO, string username)
     {
+        var existingGreenhouse = await ExistingGreenhouse(greenhouseDTO);
+        if (existingGreenhouse == true)
+        {
+            return BadRequest();
+        }
+
         if (greenhouseDTO.Name == null)
         {
             return BadRequest();
@@ -73,6 +79,12 @@ public class GreenhouseController : ControllerBase
     [HttpPut("editgreenhouse/{id}")]
     public async Task<IActionResult> EditGreenhouse(GreenhouseDTO greenhouseDTO, Guid id)
     {
+        var existingGreenhouse = await ExistingGreenhouse(greenhouseDTO);
+        if (existingGreenhouse == true)
+        {
+            return BadRequest();
+        }
+
         if (greenhouseDTO.Name == null)
         {
             return BadRequest();
@@ -104,5 +116,12 @@ public class GreenhouseController : ControllerBase
         await dataContext.SaveChangesAsync();
 
         return Ok();
+    }
+
+    private async Task<bool> ExistingGreenhouse(GreenhouseDTO greenhouseDTO)
+    {
+        var existingGreenhouse = await dataContext.Greenhouses.AnyAsync(g => string.Equals(g.Name, greenhouseDTO.Name) &&
+            string.Equals(g.Street, greenhouseDTO.Street) && g.Number == greenhouseDTO.Number && string.Equals(g.City, greenhouseDTO.City));
+        return existingGreenhouse;
     }
 }
