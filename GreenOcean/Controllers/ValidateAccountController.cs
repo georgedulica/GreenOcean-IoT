@@ -37,7 +37,7 @@ public class ValidateAccountController : ControllerBase
         var validationToken = new AccountValidationToken
         {
             Name = "validate",
-            Token = tokenService.CreateToken(id.ToString())
+            Token = tokenService.CreateConfirmationCodeToken(id.ToString())
         };
 
         return Ok(validationToken);

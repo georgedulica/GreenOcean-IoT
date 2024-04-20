@@ -70,7 +70,7 @@ public class ResetingPasswordController : ControllerBase
         var tokenDTO = new ResetPasswordToken
         {
             Name = "reset",
-            Token = tokenService.CreateToken(user.Username)
+            Token = tokenService.CreateConfirmationCodeToken(user.Username)
         };
 
         return tokenDTO;

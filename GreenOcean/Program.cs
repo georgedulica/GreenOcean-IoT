@@ -77,6 +77,20 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+// Add authorization policies
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("MemberPolicy", policy =>
+    {
+        policy.RequireRole("Member");
+    });
+
+    options.AddPolicy("AdminPolicy", policy =>
+    {
+        policy.RequireRole("Admin");
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

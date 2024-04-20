@@ -38,7 +38,7 @@ public class LoginController : ControllerBase
         var tokenDTO = new LoginToken
         {
             Username = user.Username,
-            Token = tokenService.CreateToken(user.Username)
+            Token = tokenService.CreateLoginToken(user.Username, user.Role)
         };
         return tokenDTO;
     }
