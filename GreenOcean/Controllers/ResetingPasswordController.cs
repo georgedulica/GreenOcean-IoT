@@ -1,8 +1,8 @@
-﻿using GreenOcean.Data;
-using GreenOcean.DTOs;
-using GreenOcean.Entities;
-using GreenOcean.Interfaces;
-using GreenOcean.Settings;
+﻿using GreenOcean.Business.DTOs;
+using GreenOcean.Business.Interfaces;
+using GreenOcean.Business.Settings;
+using GreenOcean.Data;
+using GreenOcean.Data.Entities;
 using GreenOcean.Tokens;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

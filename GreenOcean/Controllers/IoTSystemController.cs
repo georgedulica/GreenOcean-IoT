@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
+using GreenOcean.Business.DTOs;
 using GreenOcean.Data;
-using GreenOcean.DTOs;
+using GreenOcean.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using IoTSystem = GreenOcean.Entities.IoTSystem;
 
 namespace GreenOcean.Controllers;
 
@@ -21,42 +21,42 @@ public class IoTSystemController : ControllerBase
     }
 
     [HttpGet("getSystem/{id}")]
-    public async Task<ActionResult<IoTSystemDTO>> GetSystem(Guid id)
+    public async Task<ActionResult<EquipmentDTO>> GetSystem(Guid id)
     {
-        var system = await dataContext.IoTSystems.FirstOrDefaultAsync(s => s.Id == id);
+        var system = await dataContext.Equipments.FirstOrDefaultAsync(s => s.Id == id);
         if (system == null)
         {
             return BadRequest("The system cannot be returned");
         }
 
-        var systemDTO = mapper.Map<IoTSystem, IoTSystemDTO>(system);
+        var systemDTO = mapper.Map<Equipment, EquipmentDTO>(system);
 
         return Ok(systemDTO);
     }
 
     [HttpGet("getSystems/{id}")]
-    public async Task<ActionResult<IoTSystem>> GetSystems(Guid id)
+    public async Task<ActionResult<Equipment>> GetSystems(Guid id)
     {
-        var systems = await dataContext.IoTSystems.Where(s => s.GreenhouseId == id).ToListAsync();
+        var systems = await dataContext.Equipments.Where(s => s.GreenhouseId == id).ToListAsync();
         if (systems == null)
         {
             return BadRequest("The system cannot be returned");
         }
 
-        var systemDTOs = mapper.Map<IEnumerable<IoTSystem>, IEnumerable<IoTSystemDTO>>(systems);
+        var systemDTOs = mapper.Map<IEnumerable<Equipment>, IEnumerable<EquipmentDTO>>(systems);
 
         return Ok(systemDTOs);
     }
 
     [HttpPost("addsystem")]
-    public async Task<IActionResult> AddSystem(IoTSystemDTO ioTSystemDTO)
+    public async Task<IActionResult> AddSystem(EquipmentDTO ioTSystemDTO)
     {
 
-        var ioTSystem = mapper.Map<IoTSystemDTO, IoTSystem>(ioTSystemDTO);
+        var ioTSystem = mapper.Map<EquipmentDTO, Equipment>(ioTSystemDTO);
         ioTSystem.Timestamp = DateTime.UtcNow.Date;
         try
         {
-            await dataContext.IoTSystems.AddAsync(ioTSystem);
+            await dataContext.Equipments.AddAsync(ioTSystem);
             await dataContext.SaveChangesAsync();
             return Ok();
         }
@@ -68,15 +68,15 @@ public class IoTSystemController : ControllerBase
     }
 
     [HttpPut("editSystem/{id}")]
-    public async Task<IActionResult> EditSystem(IoTSystemDTO ioTsystemDTO, Guid id)
+    public async Task<IActionResult> EditSystem(EquipmentDTO ioTsystemDTO, Guid id)
     {
-        var system = await dataContext.IoTSystems.FirstOrDefaultAsync(s => s.Id == id);
+        var system = await dataContext.Equipments.FirstOrDefaultAsync(s => s.Id == id);
         if (system == null)
         {
             return BadRequest("The system cannot be updated");
         }
 
-        mapper.Map<IoTSystemDTO, IoTSystem>(ioTsystemDTO, system);
+        mapper.Map<EquipmentDTO, Equipment>(ioTsystemDTO, system);
         await dataContext.SaveChangesAsync();
 
         return Ok();
@@ -86,13 +86,13 @@ public class IoTSystemController : ControllerBase
     [HttpDelete("deleteSystem/{id}")]
     public async Task<IActionResult> DeleteSystem(Guid id)
     {
-        var system = await dataContext.IoTSystems.FirstOrDefaultAsync(s => s.Id == id);
+        var system = await dataContext.Equipments.FirstOrDefaultAsync(s => s.Id == id);
         if (system == null)
         {
             return BadRequest("The system cannot be removed");
         }
 
-        dataContext.IoTSystems.Remove(system);
+        dataContext.Equipments.Remove(system);
         await dataContext.SaveChangesAsync();
 
         return Ok();

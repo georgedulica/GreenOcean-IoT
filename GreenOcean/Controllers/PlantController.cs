@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
+using GreenOcean.Business.DTOs;
+using GreenOcean.Business.Settings;
 using GreenOcean.Data;
-using GreenOcean.DTOs;
-using GreenOcean.Entities;
+using GreenOcean.Data.Entities;
 using GreenOcean.Interfaces;
-using GreenOcean.Settings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

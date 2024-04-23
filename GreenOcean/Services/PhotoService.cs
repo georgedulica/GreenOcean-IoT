@@ -1,7 +1,7 @@
 ﻿using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using GreenOcean.Business.Settings;
 using GreenOcean.Interfaces;
-using GreenOcean.Settings;
 using Microsoft.Extensions.Options;
 
 namespace GreenOcean.Services;

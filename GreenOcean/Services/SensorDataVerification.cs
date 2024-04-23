@@ -1,7 +1,7 @@
-﻿using GreenOcean.Data;
-using GreenOcean.Entities;
+﻿using GreenOcean.Business.Interfaces;
+using GreenOcean.Business.Settings;
+using GreenOcean.Data;
 using GreenOcean.Interfaces;
-using GreenOcean.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -25,7 +25,7 @@ public class SensorDataVerification : ISensorDataVerification
 
     public async Task CheckSensorData(DateTime currentTime)
     {
-        var sensorData = await dataContext.SensorData.Include(d => d.IoTSystem).ToListAsync();
+        var sensorData = await dataContext.SensorData.Include(d => d.EquipmentId).ToListAsync();
 
         foreach (var data in sensorData)
         {
@@ -33,23 +33,23 @@ public class SensorDataVerification : ISensorDataVerification
             if (timestamp >= currentTime)
             {
                 var temperature = data.Temperature;
-                var maxTemperature = data.IoTSystem.MaxTemperature;
-                var minTemperature = data.IoTSystem.MinTemperature;
+                var maxTemperature = data.Equipment.MaxTemperature;
+                var minTemperature = data.Equipment.MinTemperature;
 
                 var humidity = data.Humidity;
-                var maxHumidity = data.IoTSystem.MaxHumidity;
-                var minHumidity = data.IoTSystem.MinHumidity;
+                var maxHumidity = data.Equipment.MaxHumidity;
+                var minHumidity = data.Equipment.MinHumidity;
 
                 var lightLevel = data.LightLevel;
-                var maxLightLevel = data.IoTSystem.MaxLightLevel;
-                var minLightLevel = data.IoTSystem.MinLightLevel;
+                var maxLightLevel = data.Equipment.MaxLightLevel;
+                var minLightLevel = data.Equipment.MinLightLevel;
 
                 var soilMoisture = data.SoilMoisture;
 
                 if (temperature > maxTemperature || temperature < minTemperature)
                 {
                     var query = await (from d in dataContext.SensorData
-                                       join s in dataContext.IoTSystems on d.IoTSystemId equals s.Id
+                                       join s in dataContext.Equipments on d.EquipmentId equals s.Id
                                        join g in dataContext.Greenhouses on s.GreenhouseId equals g.Id
                                        join u in dataContext.Users on g.UserId equals u.Id
                                        where d.Id == data.Id
@@ -72,7 +72,7 @@ public class SensorDataVerification : ISensorDataVerification
                 if (humidity > maxHumidity || humidity < minHumidity)
                 {
                     var query = await (from d in dataContext.SensorData
-                                       join s in dataContext.IoTSystems on d.IoTSystemId equals s.Id
+                                       join s in dataContext.Equipments on d.EquipmentId equals s.Id
                                        join g in dataContext.Greenhouses on s.GreenhouseId equals g.Id
                                        join u in dataContext.Users on g.UserId equals u.Id
                                        where d.Id == data.Id
@@ -95,7 +95,7 @@ public class SensorDataVerification : ISensorDataVerification
                 if (lightLevel > maxLightLevel || lightLevel < minLightLevel)
                 {
                     var query = await (from d in dataContext.SensorData
-                                       join s in dataContext.IoTSystems on d.IoTSystemId equals s.Id
+                                       join s in dataContext.Equipments on d.EquipmentId equals s.Id
                                        join g in dataContext.Greenhouses on s.GreenhouseId equals g.Id
                                        join u in dataContext.Users on g.UserId equals u.Id
                                        where d.Id == data.Id
@@ -118,7 +118,7 @@ public class SensorDataVerification : ISensorDataVerification
                 if (string.Equals(soilMoisture, "dry", StringComparison.OrdinalIgnoreCase))
                 {
                     var query = await (from d in dataContext.SensorData
-                                       join s in dataContext.IoTSystems on d.IoTSystemId equals s.Id
+                                       join s in dataContext.Equipments on d.EquipmentId equals s.Id
                                        join g in dataContext.Greenhouses on s.GreenhouseId equals g.Id
                                        join u in dataContext.Users on g.UserId equals u.Id
                                        where d.Id == data.Id

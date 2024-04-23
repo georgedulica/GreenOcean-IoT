@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
-using GreenOcean.DTOs;
-using GreenOcean.Entities;
-using RegisteredSystem = GreenOcean.Entities.System;
-using DynamoDBData = GreenOcean.Data.Data;
+using GreenOcean.Business.DTOs;
+using GreenOcean.Data.Entities;
 
 namespace GreenOcean.Helpers;
 
@@ -15,10 +13,9 @@ public class AutoMapper : Profile
         CreateMap<GreenhouseDTO, Greenhouse>();
         CreateMap<Plant, PlantDTO>();
         CreateMap<PlantDTO, Plant>();
-        CreateMap<IoTSystem, IoTSystemDTO>();
-        CreateMap<IoTSystemDTO, IoTSystem>();
-        CreateMap<SystemDTO, RegisteredSystem>();
-        CreateMap<DynamoDBData, DataDTO>();
+        CreateMap<Equipment, EquipmentDTO>();
+        CreateMap<EquipmentDTO, Equipment>();
+        CreateMap<RegisteredEquipmentDTO, RegisteredEquipmentDTO>();
         CreateMap<SensorData, DataDTO>();
         CreateMap<Process, ProcessDTO>();
         CreateMap<ProcessDTO, Process>();

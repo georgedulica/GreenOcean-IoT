@@ -1,7 +1,7 @@
 ﻿using Amazon.DynamoDBv2.DataModel;
-using Microsoft.AspNetCore.Mvc;
-using GreenOcean.DTOs;
 using AutoMapper;
+using GreenOcean.Business.DTOs;
+using Microsoft.AspNetCore.Mvc;
 using DynamoDBData = GreenOcean.Data.Data;
 
 namespace GreenOcean.Controllers;

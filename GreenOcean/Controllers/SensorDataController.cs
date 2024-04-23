@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
+using GreenOcean.Business.DTOs;
 using GreenOcean.Data;
-using GreenOcean.DTOs;
-using GreenOcean.Entities;
+using GreenOcean.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace GreenOcean.Controllers;
 
@@ -27,7 +26,7 @@ public class SensorDataController : ControllerBase
         var date = timestamp.ToString("yyyy-MM-dd");
 
         var data = await dataContext.SensorData
-            .Where(d => d.IoTSystemId == id)
+            .Where(d => d.EquipmentId == id)
             .ToListAsync();
 
         var dataDTO = mapper.Map<IEnumerable<SensorData>, IEnumerable<DataDTO>>(data);

@@ -2,11 +2,14 @@ using Amazon;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.Runtime;
+using GreenOcean.Business.Interfaces;
+using GreenOcean.Business.Services;
+using GreenOcean.Business.Settings;
 using GreenOcean.Data;
-using GreenOcean.Helpers;
+using GreenOcean.Data.Interfaces;
+using GreenOcean.Data.Repositories;
 using GreenOcean.Interfaces;
 using GreenOcean.Services;
-using GreenOcean.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -32,10 +35,12 @@ builder.Services.Configure<EmailSubjectSettings>(configuration.GetSection("Email
 
 // Add services to the container.
 builder.Services.AddControllers();
-builder.Services.AddDbContext<DataContext>(opt =>
+builder.Services.AddDbContext<DataContext>(options =>
 {
-    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    options.UseSqlServer(connectionString);
 });
+
 builder.Services.AddCors();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -45,6 +50,7 @@ builder.Services.AddScoped<IEmailService>(serviceProvider =>
 {
     return new EmailService(emailSettings);
 });
+
 builder.Services.AddScoped<ITokenService>(serviceProvider => {
     return new TokenService(tokenSettings);
 });
@@ -76,6 +82,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = false
         };
     });
+
+// Add services
+builder.Services.AddScoped<ICodeRepository, CodeRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRegisteredEquipmentService, RegisteredEquipmentService>();
+builder.Services.AddScoped<ILoginRepository, LoginRepository>();
+builder.Services.AddScoped<IValidatingAccountService, ValidatingAccountService>();
+
+// Add repositories
+builder.Services.AddScoped<ICreatingUserService, UserService>();
+builder.Services.AddScoped<IRegisteredEquipmentRepository, RegisteredEquipmentRepository>();
+builder.Services.AddScoped<ILoginService, LoginService>();
 
 // Add authorization policies
 builder.Services.AddAuthorization(options =>
