@@ -34,13 +34,12 @@ public class EmailService : IEmailService
             };
 
             smtpClient.Send(senderEmail);
+            return true;
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex);
             return false;
         }
-
-        return true;
     }
 }

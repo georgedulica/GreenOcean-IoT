@@ -13,6 +13,19 @@ public class UserRepository : IUserRepository
         _dataContext = dataContext;
     }
 
+    public async Task<User?> GetUserByEmail(string email)
+    {
+        try
+        {
+            var user = await _dataContext.Users.FirstOrDefaultAsync(u => string.Equals(u.Email, email));
+            return user;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"The user cannot be returned {ex}");
+        }
+    }
+
     public async Task<bool> AddUser(User user)
     {
         try
@@ -33,8 +46,8 @@ public class UserRepository : IUserRepository
         {
             throw new Exception($"The user cannot be saved {ex}");
         }
-    }   
-    
+    }
+
     public async Task<bool> UpdateUser(Guid id, string username, byte[] password, byte[] salt)
     {
         try
@@ -45,13 +58,36 @@ public class UserRepository : IUserRepository
                 return false;
             }
 
-            var user = await GetUser(id);
+            var user = await GetUserById(id);
             if (user == null)
             {
                 return false;
             }
 
             user.Username = username;
+            user.Password = password;
+            user.Salt = salt;
+
+            await _dataContext.SaveChangesAsync();
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"The user cannot be updated {ex}");
+        }
+    }
+
+    public async Task<bool> UpdateUser(Guid id, byte[] password, byte[] salt)
+    {
+        try
+        {
+            var user = await GetUserById(id);
+            if (user == null)
+            {
+                return false;
+            }
+
             user.Password = password;
             user.Salt = salt;
 
@@ -92,7 +128,7 @@ public class UserRepository : IUserRepository
         return existingUser;
     }
 
-    public async Task<User?> GetUser(Guid id)
+    private async Task<User?> GetUserById(Guid id)
     {
         try
         {

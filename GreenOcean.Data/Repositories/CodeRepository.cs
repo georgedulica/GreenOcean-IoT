@@ -26,14 +26,15 @@ public class CodeRepository : ICodeRepository
         }
     }
 
-    public async Task<bool> AddCode(Code code)
+    public async Task<Code> AddCode(Guid userId)
     {
         try
         {
+            var code = GenerateCode(userId);
             await _dataContext.Codes.AddAsync(code);
             await _dataContext.SaveChangesAsync();
 
-            return true;
+            return code;
         }
         catch (Exception ex)
         {
@@ -54,5 +55,19 @@ public class CodeRepository : ICodeRepository
         {
             throw new Exception($"The code cannot be deleted {ex}");
         }
+    }
+
+    private Code GenerateCode(Guid userId)
+    {
+        var random = new Random();
+        var randomNumber = random.Next(100000, 1000000);
+
+        var code = new Code
+        {
+            GeneratedCode = randomNumber,
+            UserId = userId
+        };
+
+        return code;
     }
 }

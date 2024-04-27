@@ -6,7 +6,7 @@ public interface ICodeRepository
 {
     public Task<Code?> GetCode(Guid id);
 
-    public Task<bool> AddCode(Code code);
+    public Task<Code> AddCode(Guid userId);
 
     public Task<bool> DeleteCode(Code code);
 }

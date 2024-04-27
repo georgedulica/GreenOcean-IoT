@@ -1,5 +1,6 @@
 ﻿using GreenOcean.Business.DTOs;
 using GreenOcean.Business.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GreenOcean.Controllers;
@@ -27,6 +28,7 @@ public class ValidatingAccountController : ControllerBase
         return Ok(validatingAccountToken);
     }
 
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> ValidateAccount(AccountValidationDTO accountValidationDTO, Guid id)
     {

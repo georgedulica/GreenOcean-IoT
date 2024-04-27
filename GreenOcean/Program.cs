@@ -89,6 +89,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRegisteredEquipmentService, RegisteredEquipmentService>();
 builder.Services.AddScoped<ILoginRepository, LoginRepository>();
 builder.Services.AddScoped<IValidatingAccountService, ValidatingAccountService>();
+builder.Services.AddScoped<IResetingPasswordService, ResetingPasswordService>();
 
 // Add repositories
 builder.Services.AddScoped<ICreatingUserService, UserService>();

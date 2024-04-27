@@ -38,15 +38,11 @@ public class UserService : ICreatingUserService
                 return savedUserResponse;
             }
 
-            var (code, savedCodeResponse) = await SaveCode(user);
-            if (savedCodeResponse == false)
-            {
-                return savedCodeResponse;
-            }
+            var userId = user.Id;
+            var code = await _codeRepository.AddCode(userId);
+            var generatedCode = code.GeneratedCode.ToString();
      
-
-            var emailTemplate = System.IO.File.ReadAllText(_emailPathSettings.Value.RegistrationEmailPath);
-            var emailBody = CreateEmail(user, emailTemplate, code.GeneratedCode.ToString());
+            var emailBody = CreateEmail(user, generatedCode);
 
             var sentEmail = _emailService.SendEmail(user.Email, emailBody, _emailSubjectSettings.Value.RegistrationEmailSubject);
             if (sentEmail == false)
@@ -64,8 +60,9 @@ public class UserService : ICreatingUserService
         }
     }
 
-    private string CreateEmail(User user, string emailTemplate, string generatedCode)
+    private string CreateEmail(User user, string generatedCode)
     {
+        var emailTemplate = System.IO.File.ReadAllText(_emailPathSettings.Value.RegistrationEmailPath);
         string emailBody = emailTemplate.Replace("{name}", user.FirstName)
                                 .Replace("{code}", generatedCode)
                                 .Replace("{id}", user.Id.ToString());
@@ -95,21 +92,6 @@ public class UserService : ICreatingUserService
         new Random().NextBytes(buffer);
 
         return buffer;
-    }
-
-    private async Task<(Code code, bool response)> SaveCode(User user)
-    {
-        var random = new Random();
-        var randomNumber = random.Next(100000, 1000000);
-
-        var code = new Code
-        {
-            GeneratedCode = randomNumber,
-            UserId = user.Id
-        };
-
-        var response = await _codeRepository.AddCode(code);
-        return (code, response);
     }
 
     private async Task DeleteResources(Code code, User user)
