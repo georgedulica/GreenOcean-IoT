@@ -1,10 +1,11 @@
 ﻿using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using GreenOcean.Business.Interfaces;
 using GreenOcean.Business.Settings;
-using GreenOcean.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
-namespace GreenOcean.Services;
+namespace GreenOcean.Business.Services;
 
 public class PhotoService : IPhotoService
 {

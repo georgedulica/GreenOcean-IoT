@@ -4,6 +4,8 @@ namespace GreenOcean.Data.Interfaces;
 
 public interface IUserRepository
 {
+    public Task<Guid> GetUserByUsername(string username);
+
     public Task<User?> GetUserByEmail(string email);
 
     public Task<bool> AddUser(User user);

@@ -17,22 +17,27 @@ public class ResetingPasswordController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<ResetingPasswordToken?>> SendEmail(EmailDTO emailDTO)
+    public async Task<ActionResult<Guid?>> SendEmail(EmailDTO emailDTO)
     {
-        var resetingPasswordToken = await _resetingPasswordService.GenerateCode(emailDTO);
-        return resetingPasswordToken;
+        var id = await _resetingPasswordService.GenerateCode(emailDTO);
+        if (id == null)
+        {
+            return BadRequest("The code cannot be generated");
+        }
+
+        return id;
     }
 
     [HttpPost("confirmcode/{id}")]
-    public async Task<IActionResult> ConfirmCode(Guid id, CodeDTO codeDTO)
+    public async Task<ActionResult<ResetingPasswordToken>> ConfirmCode(Guid id, CodeDTO codeDTO)
     {
-        var response = await _resetingPasswordService.ConfirmCode(id, codeDTO);
-        if (response == false)
+        var resetingPasswordToken = await _resetingPasswordService.ConfirmCode(id, codeDTO);
+        if (resetingPasswordToken == null)
         {
             return BadRequest("The code is not valid");
         }
 
-        return Ok();
+        return Ok(resetingPasswordToken);
     }    
     
     [HttpPost("confirmcode/changepassword/{id}")]

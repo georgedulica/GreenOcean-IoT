@@ -13,6 +13,25 @@ public class UserRepository : IUserRepository
         _dataContext = dataContext;
     }
 
+    public async Task<Guid> GetUserByUsername(string username)
+    {
+        try
+        {
+            var user = await _dataContext.Users.FirstOrDefaultAsync(u => string.Equals(u.Username, username));
+            if (user == null)
+            {
+                return Guid.Empty;
+            }
+
+            var userId = user.Id;
+            return userId;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"The user cannot be returned {ex}");
+        }
+    }
+
     public async Task<User?> GetUserByEmail(string email)
     {
         try

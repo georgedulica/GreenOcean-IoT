@@ -1,6 +1,7 @@
 ﻿using CloudinaryDotNet.Actions;
+using Microsoft.AspNetCore.Http;
 
-namespace GreenOcean.Interfaces;
+namespace GreenOcean.Business.Interfaces;
 
 public interface IPhotoService
 {

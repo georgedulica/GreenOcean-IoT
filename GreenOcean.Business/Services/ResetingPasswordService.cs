@@ -31,7 +31,7 @@ public class ResetingPasswordService : IResetingPasswordService
         _emailPathSettings = emailPathSettings;
     }
 
-    public async Task<ResetingPasswordToken?> GenerateCode(EmailDTO emailDTO)
+    public async Task<Guid?> GenerateCode(EmailDTO emailDTO)
     {
         try
         {
@@ -55,14 +55,7 @@ public class ResetingPasswordService : IResetingPasswordService
                 throw new Exception("The email cannot be sent");
             }
 
-            var token = _tokenService.CreateConfirmationCodeToken(user.Username);
-            var resetingPasswordToken = new ResetingPasswordToken
-            {
-                Id = userId.ToString(),
-                Token = token
-            };
-
-            return resetingPasswordToken;
+            return userId;
         }
         catch (Exception ex)
         {
@@ -71,24 +64,32 @@ public class ResetingPasswordService : IResetingPasswordService
         }
     }
 
-    public async Task<bool> ConfirmCode(Guid id, CodeDTO codeDTO)
+    public async Task<ResetingPasswordToken?> ConfirmCode(Guid id, CodeDTO codeDTO)
     {
         try
         {
             var code = await _codeRepository.GetCode(id);
             if (code == null)
             {
-                return false;
+                return null;
             }
 
             var generatedCode = code.GeneratedCode;
             if (generatedCode != codeDTO.Code)
             {
-                return false;
+                return null;
             }
 
             await _codeRepository.DeleteCode(code);
-            return true;
+
+            var token = _tokenService.CreateConfirmationCodeToken(id.ToString());
+            var resetingPasswordToken = new ResetingPasswordToken
+            {
+                Id = id.ToString(),
+                Token = token
+            };
+
+            return resetingPasswordToken;
         }
         catch (Exception ex)
         {

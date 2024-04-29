@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
 using GreenOcean.Business.DTOs;
+using GreenOcean.Business.Interfaces;
 using GreenOcean.Business.Settings;
 using GreenOcean.Data;
 using GreenOcean.Data.Entities;
-using GreenOcean.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace GreenOcean.Controllers;
 
@@ -16,104 +17,68 @@ namespace GreenOcean.Controllers;
 [Route("plants")]
 public class PlantsController : ControllerBase
 {
-    private readonly DataContext dataContext;
-    private readonly IMapper mapper;
-    private readonly IPhotoService photoService;
-    private readonly IOptions<BasicPhotoSettings> config;
+    private readonly IPlantService _plantService;
 
-    public PlantsController(DataContext dataContext, IMapper mapper, IPhotoService photoService, IOptions<BasicPhotoSettings> config)
+    public PlantsController(IPlantService plantService)
     {
-        this.dataContext = dataContext;
-        this.mapper = mapper;
-        this.photoService = photoService;
-        this.config = config;
+        _plantService = plantService;
     }
 
-    [HttpGet("getplant/{id}")]
-    public async Task<ActionResult<IEnumerable<GreenhouseDTO>>> GetPlant(Guid id)
+    [HttpGet("getPlant/{id}")]
+    public async Task<ActionResult<PlantDTO>> GetPlant(Guid id)
     {
-        var plant = await dataContext.Plants.FirstOrDefaultAsync(p => p.Id == id);
-        var plantAsDTO = mapper.Map<Plant, PlantDTO>(plant);
-
-        return Ok(plantAsDTO);
-    }
-
-    [HttpGet("getplants/{id}")]
-    public async Task<ActionResult<IEnumerable<GreenhouseDTO>>> GetPlants(Guid id)
-    {
-        var plants = await dataContext.Plants.Where(g => g.GreenhouseId == id).ToListAsync();
-        var plantsAsDTO = mapper.Map<IEnumerable<Plant>, IEnumerable<PlantDTO>>(plants);
-
-        return Ok(plantsAsDTO);
-    }
-
-    [HttpPost("createplant")]
-    public async Task<IActionResult> CreatePlant(PlantDTO plantDTO)
-    {
-        if (plantDTO.Name == null)
-        {
-            return BadRequest();
-        }
-
-        var plant = mapper.Map<PlantDTO, Plant>(plantDTO);
-
-        plant.PhotoId = config.Value.PublicId;
-        plant.PhotoURL = config.Value.URL;
-
-        await dataContext.Plants.AddAsync(plant);
-        await dataContext.SaveChangesAsync();
-
-        return Ok();
-    }
-
-    [HttpPut("editplant/{id}")]
-    public async Task<IActionResult> EditPlant(PlantDTO plantDTO, Guid id)
-    {
-        if (plantDTO.Name == null)
-        {
-            return BadRequest();
-        }
-
-        var plant = await dataContext.Plants.FirstOrDefaultAsync(p => p.Id == id);
+        var plant = await _plantService.GetPlant(id);
         if (plant == null)
         {
-            return BadRequest("Invalid id");
+            return BadRequest("The plant cannot be returned");
         }
 
-        mapper.Map<PlantDTO, Plant>(plantDTO, plant);
-        await dataContext.SaveChangesAsync();
+        return Ok(plant);
+    }
+
+    [HttpGet("getPlants/{id}")]
+    public async Task<ActionResult<IEnumerable<PlantDTO>>> GetPlants(Guid id)
+    {
+        var plants = await _plantService.GetPlants(id);
+        if (plants.IsNullOrEmpty())
+        {
+            return BadRequest("The plants cannot be returned");
+        }
+
+        return Ok(plants);
+    }
+
+    [HttpPost("createPlant")]
+    public async Task<IActionResult> AddPlant(PlantDTO plantDTO)
+    {
+        var reseponse = await _plantService.AddPlant(plantDTO);
+        if (reseponse == false)
+        {
+            return BadRequest("The plant already exits");
+        }
 
         return Ok();
     }
 
-    [HttpDelete("deleteplant/{id}")]
+    [HttpPut("editPlant/{id}")]
+    public async Task<IActionResult> EditPlant(Guid id, PlantDTO plantDTO)
+    {
+        var response = await _plantService.EditPlant(id, plantDTO);
+        if (response == false)
+        {
+            return BadRequest("The plant already exists");
+        }
+
+        return Ok();
+    }
+
+    [HttpDelete("deletePlant/{id}")]
     public async Task<IActionResult> DeletePlant(Guid id)
     {
-        var plant = await dataContext.Plants.FirstOrDefaultAsync(p => p.Id == id);
-        if (plant == null)
+        var response = await _plantService.DeletePlant(id);
+         if (response == false)
         {
-            return BadRequest("Invalid id");
-        }
-
-        var deletingResult = await photoService.DeletePhoto(plant.PhotoId);
-        if (deletingResult.Error != null)
-        {
-            return BadRequest("The plant cannot be deleted");
-        }
-
-        try
-        {
-            dataContext.Remove(plant);
-            await dataContext.SaveChangesAsync();
-        }
-        catch (Exception ex)
-        {
-            plant.PhotoURL = config.Value.URL;
-            plant.PhotoId = config.Value.PublicId;
-            await dataContext.SaveChangesAsync();
-
-            Console.WriteLine(ex);
-            return BadRequest("The plant cannot be deleted");
+            return BadRequest("The plant cannot be removed");
         }
 
         return Ok();

@@ -1,6 +1,6 @@
-﻿using GreenOcean.Business.Settings;
+﻿using GreenOcean.Business.Interfaces;
+using GreenOcean.Business.Settings;
 using GreenOcean.Data;
-using GreenOcean.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
