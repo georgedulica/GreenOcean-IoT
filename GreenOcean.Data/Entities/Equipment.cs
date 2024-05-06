@@ -22,10 +22,6 @@ public class Equipment
 
     public string? Status { get; set; }
 
-    public Guid RegisteredEquipmentId { get; set; }
-
-    public RegisteredEquipment RegisteredEquipment { get; set; } = null!;
-
     public Guid GreenhouseId { get; set; }
 
     public Greenhouse Greenhouse { get; set; } = null!;

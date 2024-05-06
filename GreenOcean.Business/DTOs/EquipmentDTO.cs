@@ -20,9 +20,9 @@ public class EquipmentDTO
 
     public DateTime Timestamp { get; set; }
 
-    public string? Status { get; set; }
+    public string Status { get; set; }
 
     public Guid GreenhouseId { get; set; }
 
-    public Guid RegisteredEquipmentId { get; set; }
+    public Guid Code { get; set; }
 }

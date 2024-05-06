@@ -90,6 +90,8 @@ builder.Services.AddScoped<IResetingPasswordService, ResetingPasswordService>();
 builder.Services.AddScoped<IGreenhouseService, GreenhouseService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<ICreatingUserService, UserService>();
+builder.Services.AddScoped<IPlantService, PlantService>();
+builder.Services.AddScoped<IEquipmentService, EquipmentService>();
 
 // Add repository dependencies
 builder.Services.AddScoped<ILoginRepository, LoginRepository>();
@@ -97,6 +99,8 @@ builder.Services.AddScoped<ICodeRepository, CodeRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRegisteredEquipmentRepository, RegisteredEquipmentRepository>();
 builder.Services.AddScoped<IGreenhouseRepository, GreenhouseRepository>();
+builder.Services.AddScoped<IPlantRepository, PlantRepository>();
+builder.Services.AddScoped<IEquipmentRepository, EquipmentRepository>();
 
 // Add authorization policies
 builder.Services.AddAuthorization(options =>

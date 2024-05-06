@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using GreenOcean.Business.DTOs;
+using GreenOcean.Business.Interfaces;
 using GreenOcean.Data;
 using GreenOcean.Data.Entities;
+using GreenOcean.Data.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace GreenOcean.Controllers;
 
@@ -11,41 +14,35 @@ namespace GreenOcean.Controllers;
 [Route("processes")]
 public class ProcessController : ControllerBase
 {
-    private readonly DataContext dataContext;
-    private readonly IMapper mapper;
-    public ProcessController(DataContext dataContext, IMapper mapper)
+    private readonly IProcessService _processService;
+
+    public ProcessController(IProcessService processService)
     {
-        this.dataContext = dataContext;
-        this.mapper = mapper;
+        _processService = processService;
     }
 
     [HttpGet("getProcess/{id}")]
     public async Task<ActionResult<ProcessDTO>> GetProcess(Guid id)
     {
-        var process = await dataContext.Processes.FirstOrDefaultAsync(p => p.Id == id);
+        var process = await _processService.GetProcess(id);
         if (process == null)
         {
             return BadRequest();
         }
 
-        var processDTO = mapper.Map<Process, ProcessDTO>(process);
-
-        return Ok(processDTO);
+        return Ok(process);
     }
 
     [HttpGet("getProcesses/{timestamp}/{greenhouseId}")]
-    public async Task<ActionResult<ProcessDTO>> GetProcesses(Guid greenhouseId, string timestamp)
+    public async Task<ActionResult<ProcessDTO>> GetProcesses(Guid greenhouseId)
     {
-        var processes = await dataContext.Processes.Where(p => p.GreenhouseId == greenhouseId).ToListAsync();
+        var processes = await _processService.GetProcesses(greenhouseId);
         if (processes == null)
         {
             return BadRequest();
         }
 
-        var processDTOs = mapper.Map<IEnumerable<Process>, IEnumerable<ProcessDTO>>(processes);
-        var processesDTOsToReturn = CompareTimestamp(processDTOs, timestamp);
-
-        return Ok(processesDTOsToReturn);
+        return Ok(processes);
     }
 
     [HttpPost("createProcess")]

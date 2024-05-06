@@ -1,14 +1,7 @@
-﻿using AutoMapper;
-using GreenOcean.Business.DTOs;
+﻿using GreenOcean.Business.DTOs;
 using GreenOcean.Business.Interfaces;
-using GreenOcean.Business.Settings;
-using GreenOcean.Data;
-using GreenOcean.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 
 namespace GreenOcean.Controllers;
 
@@ -40,7 +33,7 @@ public class PlantsController : ControllerBase
     public async Task<ActionResult<IEnumerable<PlantDTO>>> GetPlants(Guid id)
     {
         var plants = await _plantService.GetPlants(id);
-        if (plants.IsNullOrEmpty())
+        if (plants == null)
         {
             return BadRequest("The plants cannot be returned");
         }
