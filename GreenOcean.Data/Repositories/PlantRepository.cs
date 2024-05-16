@@ -116,7 +116,9 @@ public class PlantRepository : IPlantRepository
 
     private async Task<bool> ChecksPlant(Plant plant)
     {
-        var existingPlant = await _dataContext.Plants.AnyAsync(p => string.Equals(p.Name, plant.Name) && p.GreenhouseId == plant.GreenhouseId);
+        var existingPlant = await _dataContext.Plants.AnyAsync(p => string.Equals(p.Name, plant.Name) && p.Height == plant.Height &&
+            string.Equals(p.Type, plant.Type) && p.MositureLevel == plant.MositureLevel && p.Humidity == plant.Humidity &&
+            p.Temperature == plant.Temperature && string.Equals(p.Soil, plant.Soil) && p.GreenhouseId == plant.GreenhouseId);
 
         return existingPlant;
     }

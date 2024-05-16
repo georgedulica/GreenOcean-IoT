@@ -8,6 +8,7 @@ public class RegisteredEquipmentMapper : Profile
 {
     public RegisteredEquipmentMapper()
     {
-        CreateMap<RegisteredEquipmentDTO, RegisteredEquipment>();
+        CreateMap<RegisteredEquipmentDTO, RegisteredEquipment>()
+        .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Code.ToUpper()));
     }
 }

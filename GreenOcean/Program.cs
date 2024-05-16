@@ -8,7 +8,6 @@ using GreenOcean.Business.Settings;
 using GreenOcean.Data;
 using GreenOcean.Data.Interfaces;
 using GreenOcean.Data.Repositories;
-using GreenOcean.Interfaces;
 using GreenOcean.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -92,6 +91,8 @@ builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<ICreatingUserService, UserService>();
 builder.Services.AddScoped<IPlantService, PlantService>();
 builder.Services.AddScoped<IEquipmentService, EquipmentService>();
+builder.Services.AddScoped<IProcessService, ProcessService>();
+builder.Services.AddScoped<IDataRepository, DataRepository>();
 
 // Add repository dependencies
 builder.Services.AddScoped<ILoginRepository, LoginRepository>();
@@ -101,6 +102,8 @@ builder.Services.AddScoped<IRegisteredEquipmentRepository, RegisteredEquipmentRe
 builder.Services.AddScoped<IGreenhouseRepository, GreenhouseRepository>();
 builder.Services.AddScoped<IPlantRepository, PlantRepository>();
 builder.Services.AddScoped<IEquipmentRepository, EquipmentRepository>();
+builder.Services.AddScoped<IProcessRepository, ProcessRepository>();
+builder.Services.AddScoped<IDataService, DataService>();
 
 // Add authorization policies
 builder.Services.AddAuthorization(options =>

@@ -1,4 +1,4 @@
-﻿namespace GreenOcean.Interfaces;
+﻿namespace GreenOcean.Business.Interfaces;
 
 public interface ISensorDataVerification
 {

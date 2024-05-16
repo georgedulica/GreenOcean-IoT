@@ -1,4 +1,8 @@
-﻿using GreenOcean.Interfaces;
+﻿using GreenOcean.Business.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
+namespace GreenOcean.Business.Services;
 
 public class SensorDataHostedService : BackgroundService
 {

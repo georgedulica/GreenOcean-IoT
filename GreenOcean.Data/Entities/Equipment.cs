@@ -1,4 +1,6 @@
-﻿namespace GreenOcean.Data.Entities;
+﻿using System.Reflection.Metadata;
+
+namespace GreenOcean.Data.Entities;
 
 public class Equipment
 {
@@ -26,5 +28,7 @@ public class Equipment
 
     public Greenhouse Greenhouse { get; set; } = null!;
 
-    public ICollection<SensorData> SensorData { get; } = new List<SensorData>();
+    public Guid RegisteredEquipmentId { get; set; }
+
+    public RegisteredEquipment RegisteredEquipment { get; set; } = null!;
 }

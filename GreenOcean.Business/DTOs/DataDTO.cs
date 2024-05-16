@@ -2,7 +2,7 @@
 
 public class DataDTO
 {
-    public string IoTSystemId { get; set; }
+    public string EquipmentId { get; set; }
 
     public string Timestamp { get; set; }
 

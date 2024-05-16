@@ -47,6 +47,12 @@ public class ProcessRepository : IProcessRepository
     {
         try
         {
+            var existingProcess = await CheckProcess(process);
+            if (existingProcess == true)
+            {
+                return false;
+            }
+
             await _dataContext.Processes.AddAsync(process);
             await _dataContext.SaveChangesAsync();
 
@@ -63,6 +69,12 @@ public class ProcessRepository : IProcessRepository
     {
         try
         {
+            var existingProcess = await CheckProcess(process);
+            if (existingProcess == true)
+            {
+                return false;
+            }
+
             processToEdit.ProcessName = process.ProcessName;
             processToEdit.Description = process.Description;
             processToEdit.Timestamp = process.Timestamp;
@@ -95,5 +107,12 @@ public class ProcessRepository : IProcessRepository
             Console.WriteLine(message);
             throw new Exception(message);
         }
+    }
+
+    private async Task<bool> CheckProcess(Process process)
+    {
+        var existingProcess = await _dataContext.Processes.AnyAsync(p => string.Equals(p.ProcessName, process.ProcessName) &&
+            string.Equals(p.Description, process.Description) && p.GreenhouseId == process.GreenhouseId && p.Timestamp == process.Timestamp);
+        return existingProcess;
     }
 }

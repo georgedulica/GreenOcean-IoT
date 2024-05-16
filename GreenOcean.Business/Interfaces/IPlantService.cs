@@ -4,7 +4,7 @@ namespace GreenOcean.Business.Interfaces;
 
 public interface IPlantService
 {
-    public Task<PlantDTO> GetPlant(Guid id);
+    public Task<PlantDTO?> GetPlant(Guid id);
 
     public Task<IEnumerable<PlantDTO>> GetPlants(Guid id);
 

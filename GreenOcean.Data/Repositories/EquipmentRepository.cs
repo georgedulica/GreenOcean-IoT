@@ -32,7 +32,7 @@ public class EquipmentRepository : IEquipmentRepository
     {
         try
         {
-            var equipment = await _dataContext.Equipments.Where(e => e.GreenhouseId == id).ToListAsync();
+            var equipment = await _dataContext.Equipments.Where(e => e.GreenhouseId == id).Include(e => e.RegisteredEquipment).ToListAsync();
             return equipment;
         }
         catch (Exception exception)
@@ -43,14 +43,8 @@ public class EquipmentRepository : IEquipmentRepository
         }
     }
 
-    public async Task<bool> AddEquipment(string code, Equipment equipment)
+    public async Task<bool> AddEquipment(Equipment equipment)
     {
-        var validCode = await ChecksCode(code);
-        if (validCode == false)
-        {
-            throw new Exception("The code is invalid");
-        }
-
         var existingEquipment = await ChecksEquipment(equipment);
         if (existingEquipment == true)
         {
@@ -89,7 +83,6 @@ public class EquipmentRepository : IEquipmentRepository
             equipmentToEdit.MinHumidity = equipment.MinHumidity;
             equipmentToEdit.MaxLightLevel = equipment.MaxLightLevel;
             equipmentToEdit.MinLightLevel = equipment.MinLightLevel;
-            equipmentToEdit.Timestamp = equipment.Timestamp;
             equipmentToEdit.Status = equipment.Status;
             equipmentToEdit.GreenhouseId = equipment.GreenhouseId;
 
@@ -124,13 +117,8 @@ public class EquipmentRepository : IEquipmentRepository
     private async Task<bool> ChecksEquipment(Equipment equipment)
     {
         var existingEquipment = await _dataContext.Equipments.AnyAsync(e => string.Equals(e.Name, equipment.Name) 
-            && e.GreenhouseId == equipment.GreenhouseId);
+                && e.GreenhouseId == equipment.GreenhouseId && string.Equals(e.MaxLightLevel, equipment.MaxLightLevel) && 
+                string.Equals(e.Status, equipment.Status));
         return existingEquipment;
-    }
-
-    private async Task<bool> ChecksCode(string code)
-    {
-        var existingCode = await _dataContext.RegisteredEquipments.AnyAsync(e => string.Equals(e.Code, code));
-        return existingCode;
     }
 }

@@ -9,11 +9,14 @@ namespace GreenOcean.Business.Services;
 public class EquipmentService : IEquipmentService
 {
     private readonly IEquipmentRepository _equipmentRepository;
+    private readonly IRegisteredEquipmentRepository _registeredEquipmentRepository;
     private readonly IMapper _mapper;
 
-    public EquipmentService(IEquipmentRepository equipmentRepository, IMapper mapper)
+    public EquipmentService(IEquipmentRepository equipmentRepository, IRegisteredEquipmentRepository registeredEquipmentRepository,
+        IMapper mapper)
     {
         _equipmentRepository = equipmentRepository;
+        _registeredEquipmentRepository = registeredEquipmentRepository;
         _mapper = mapper;
     }
 
@@ -58,10 +61,19 @@ public class EquipmentService : IEquipmentService
     {
         try
         {
-            var registeredEquipmentId = equipmentDTO.Code.ToString();
+            var code = equipmentDTO.Code;
+            var registeredEquipment = await _registeredEquipmentRepository.GetRegisteredEquipment(code);
+            if (registeredEquipment == null)
+            {
+                return false;
+            }
+
             var equipment = _mapper.Map<EquipmentDTO, Equipment>(equipmentDTO);
 
-            var response = await _equipmentRepository.AddEquipment(registeredEquipmentId, equipment);
+            equipment.RegisteredEquipmentId = registeredEquipment.Id;
+            equipment.Timestamp = DateTime.Now;
+
+            var response = await _equipmentRepository.AddEquipment(equipment);
             return response;
         }
         catch (Exception exception)

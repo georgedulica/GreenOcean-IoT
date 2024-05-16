@@ -37,7 +37,6 @@ public class GreenhouseController : ControllerBase
         if (greenhouse == null)
         {
             return BadRequest("The greenhouse cannot be returned");
-
         }
 
         return Ok(greenhouse);
@@ -50,7 +49,6 @@ public class GreenhouseController : ControllerBase
         if (response == false)
         {
             return BadRequest("This greenhouse already exits");
-
         }
 
         return Ok();
@@ -63,7 +61,6 @@ public class GreenhouseController : ControllerBase
         if (response == false)
         {
             return BadRequest("This greenhouse already exits");
-
         }
 
         return Ok();
@@ -76,7 +73,6 @@ public class GreenhouseController : ControllerBase
         if (response == false)
         {
             return BadRequest("The greenhouse cannot be removed");
-
         }
 
         return Ok();

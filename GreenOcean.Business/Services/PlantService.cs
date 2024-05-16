@@ -24,11 +24,16 @@ public class PlantService : IPlantService
         _basicPhotoSettings = basicPhotoSettings;
     }
 
-    public async Task<PlantDTO> GetPlant(Guid id)
+    public async Task<PlantDTO?> GetPlant(Guid id)
     {
         try
         {
             var plant = await _plantRepository.GetPlant(id);
+            if (plant == null)
+            {
+                return null;
+            }
+
             var plantDTO = _mapper.Map<Plant, PlantDTO>(plant);
             return plantDTO;
         }
@@ -82,6 +87,11 @@ public class PlantService : IPlantService
         try
         {
             var plantToEdit = await _plantRepository.GetPlant(id);
+            if (plantToEdit == null)
+            {
+                throw new Exception("The plant cannot be found");
+            }
+
             var plant = _mapper.Map<PlantDTO, Plant>(plantDTO);
 
             var response = await _plantRepository.EditPlant(plantToEdit, plant);
@@ -105,10 +115,13 @@ public class PlantService : IPlantService
                 return false;
             }
 
-            var deletingResult = await _photoService.DeletePhoto(plant.PhotoId);
-            if (deletingResult.Error != null)
+            if (!string.Equals(plant.PhotoURL, _basicPhotoSettings.Value.URL))
             {
-                return false;
+                var deletingResult = await _photoService.DeletePhoto(plant.PhotoId);
+                if (deletingResult.Error != null)
+                {
+                    return false;
+                }
             }
 
             var response = await _plantRepository.DeletePlant(plant);

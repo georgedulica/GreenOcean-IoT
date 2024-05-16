@@ -5,9 +5,7 @@ namespace GreenOcean.Data;
 
 public class DataContext : DbContext
 {
-    public DataContext(DbContextOptions options) : base(options)
-    {
-    }
+    public DataContext(DbContextOptions options) : base(options) {}
 
     public DbSet<User> Users { get; set; }
 
@@ -20,8 +18,6 @@ public class DataContext : DbContext
     public DbSet<Equipment> Equipments { get; set; }
 
     public DbSet<RegisteredEquipment> RegisteredEquipments { get; set; }
-
-    public DbSet<SensorData> SensorData { get; set; }
 
     public DbSet<Process> Processes { get; set; }
 }

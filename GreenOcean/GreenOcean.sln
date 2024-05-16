@@ -5,11 +5,13 @@ VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOcean", "GreenOcean.csproj", "{D7DD26F6-113E-49F4-AA0D-704D5C93EBE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenOcean.Data", "..\GreenOcean.Data\GreenOcean.Data.csproj", "{BA116BCB-FBC7-4DF4-8446-0255F212E992}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOcean.Data", "..\GreenOcean.Data\GreenOcean.Data.csproj", "{BA116BCB-FBC7-4DF4-8446-0255F212E992}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenOcean.Common", "..\GreenOcean.Common\GreenOcean.Common.csproj", "{B4DB5BA8-404B-46C5-B110-133A28A12288}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOcean.Common", "..\GreenOcean.Common\GreenOcean.Common.csproj", "{B4DB5BA8-404B-46C5-B110-133A28A12288}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenOcean.Business", "..\GreenOcean.Business\GreenOcean.Business.csproj", "{FAF97A66-447C-4444-9C41-8FA0CD336CED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOcean.Business", "..\GreenOcean.Business\GreenOcean.Business.csproj", "{FAF97A66-447C-4444-9C41-8FA0CD336CED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenOcean.UnitTests", "..\GreenOcean.UnitTests\GreenOcean.UnitTests.csproj", "{F737E187-25D5-4FFB-A7DA-21D95F010581}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{FAF97A66-447C-4444-9C41-8FA0CD336CED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FAF97A66-447C-4444-9C41-8FA0CD336CED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FAF97A66-447C-4444-9C41-8FA0CD336CED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F737E187-25D5-4FFB-A7DA-21D95F010581}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F737E187-25D5-4FFB-A7DA-21D95F010581}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F737E187-25D5-4FFB-A7DA-21D95F010581}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F737E187-25D5-4FFB-A7DA-21D95F010581}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

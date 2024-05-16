@@ -69,7 +69,7 @@ public class PlantsController : ControllerBase
     public async Task<IActionResult> DeletePlant(Guid id)
     {
         var response = await _plantService.DeletePlant(id);
-         if (response == false)
+        if (response == false)
         {
             return BadRequest("The plant cannot be removed");
         }

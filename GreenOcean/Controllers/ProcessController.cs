@@ -27,19 +27,19 @@ public class ProcessController : ControllerBase
         var process = await _processService.GetProcess(id);
         if (process == null)
         {
-            return BadRequest();
+            return BadRequest("The process cannot be returned");
         }
 
         return Ok(process);
     }
 
-    [HttpGet("getProcesses/{timestamp}/{greenhouseId}")]
+    [HttpGet("getProcesses/{greenhouseId}")]
     public async Task<ActionResult<ProcessDTO>> GetProcesses(Guid greenhouseId)
     {
         var processes = await _processService.GetProcesses(greenhouseId);
         if (processes == null)
         {
-            return BadRequest();
+            return BadRequest("The processes cannot be returned");
         }
 
         return Ok(processes);
@@ -48,9 +48,11 @@ public class ProcessController : ControllerBase
     [HttpPost("createProcess")]
     public async Task<IActionResult> CreateProcess(ProcessDTO processDTO)
     {
-        var process = mapper.Map<ProcessDTO, Process>(processDTO);
-        await dataContext.AddAsync(process);
-        await dataContext.SaveChangesAsync();
+        var response = await _processService.AddProcess(processDTO);
+        if (response == false)
+        {
+            return BadRequest("The process already exits");
+        }
 
         return Ok();
     }
@@ -58,15 +60,11 @@ public class ProcessController : ControllerBase
     [HttpPut("editProcess/{id}")]
     public async Task<IActionResult> EditProcess(ProcessDTO processDTO, Guid id)
     {
-        var process = await dataContext.Processes.FirstOrDefaultAsync(p => p.Id == id);
-        if (process == null)
+        var response = await _processService.EditProcess(id, processDTO);
+        if (response == false)
         {
-            return BadRequest();
+            return BadRequest("The process already exits");
         }
-
-        mapper.Map<ProcessDTO, Process>(processDTO, process);
-
-        await dataContext.SaveChangesAsync();
 
         return Ok();
     }
@@ -74,30 +72,12 @@ public class ProcessController : ControllerBase
     [HttpDelete("deleteProcess/{id}")]
     public async Task<IActionResult> DeleteProcess(Guid id)
     {
-        var process = await dataContext.Processes.FirstOrDefaultAsync(p => p.Id == id);
-        if (process == null)
+        var response = await _processService.DeleteProcess(id);
+        if (response == false)
         {
-            return BadRequest();
+            return BadRequest("The process already exits");
         }
-
-        dataContext.Remove(process);
-        await dataContext.SaveChangesAsync();
 
         return Ok();
-    }
-
-    private IEnumerable<ProcessDTO> CompareTimestamp(IEnumerable<ProcessDTO> processes, string timestamp)
-    {
-        IList<ProcessDTO> processesToReturn = new List<ProcessDTO>();
-        foreach (var process in processes)
-        {
-            var timestampFromDbString = process.Timestamp.ToString("yyyy-MM-dd");
-            if (string.Equals(timestampFromDbString, timestamp, StringComparison.OrdinalIgnoreCase))
-            {
-                processesToReturn.Add(process);
-            }
-        }
-
-        return processesToReturn;
     }
 }

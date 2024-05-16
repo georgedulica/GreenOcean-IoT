@@ -12,6 +12,25 @@ public class RegisteredEquipmentRepository : IRegisteredEquipmentRepository
         _dataContext = dataContext;
     }
 
+    public async Task<RegisteredEquipment?> GetRegisteredEquipment(Guid code)
+    {
+        try
+        {
+            var codeString = code.ToString();
+            var registeredEquipment = await _dataContext.RegisteredEquipments.FirstOrDefaultAsync(e => string.Equals(e.Code, codeString));
+            if (registeredEquipment == null)
+            {
+                return null;
+            }
+
+            return registeredEquipment;
+        }
+        catch (Exception ex)
+        {
+            throw new ArgumentException($"The equipment cannot be saved {ex}");
+        }
+    }
+
     public async Task<bool> AddRegisteredEquipment(RegisteredEquipment registeredEquipment)
     {
         try
