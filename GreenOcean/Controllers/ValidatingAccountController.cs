@@ -28,7 +28,6 @@ public class ValidatingAccountController : ControllerBase
         return Ok(validatingAccountToken);
     }
 
-    [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> ValidateAccount(AccountValidationDTO accountValidationDTO, Guid id)
     {

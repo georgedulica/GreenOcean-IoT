@@ -1,8 +1,5 @@
 ﻿using Amazon.DynamoDBv2.DataModel;
-using Amazon.DynamoDBv2.DocumentModel;
 using GreenOcean.Data.Interfaces;
-using System.Collections.Concurrent;
-using System.Globalization;
 
 namespace GreenOcean.Data.Repositories;
 

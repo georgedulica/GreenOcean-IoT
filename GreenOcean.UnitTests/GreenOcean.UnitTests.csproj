@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GreenOcean\GreenOcean.csproj" />
+    <ProjectReference Include="..\GreenOcean\GreenOcean.Controllers.csproj" />
   </ItemGroup>
 
 </Project>

@@ -13,4 +13,6 @@ public class DataDTO
     public string SoilMoisture { get; set; }
 
     public float Temperature { get; set; }
+
+    public EquipmentDTO Equipment { get; set; }
 }

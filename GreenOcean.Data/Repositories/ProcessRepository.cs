@@ -77,7 +77,8 @@ public class ProcessRepository : IProcessRepository
 
             processToEdit.ProcessName = process.ProcessName;
             processToEdit.Description = process.Description;
-            processToEdit.Timestamp = process.Timestamp;
+            processToEdit.StartDate = process.StartDate;
+            processToEdit.DueDate = process.DueDate;
             processToEdit.GreenhouseId = process.GreenhouseId;
 
             await _dataContext.SaveChangesAsync();
@@ -112,7 +113,7 @@ public class ProcessRepository : IProcessRepository
     private async Task<bool> CheckProcess(Process process)
     {
         var existingProcess = await _dataContext.Processes.AnyAsync(p => string.Equals(p.ProcessName, process.ProcessName) &&
-            string.Equals(p.Description, process.Description) && p.GreenhouseId == process.GreenhouseId && p.Timestamp == process.Timestamp);
+            string.Equals(p.Description, process.Description) && p.GreenhouseId == process.GreenhouseId && p.StartDate == process.StartDate && process.DueDate == process.DueDate);
         return existingProcess;
     }
 }

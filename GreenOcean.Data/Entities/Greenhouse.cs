@@ -18,7 +18,7 @@ public class Greenhouse
 
     public ICollection<Plant> Plants { get; } = new List<Plant>();
 
-    public ICollection<Equipment> Equipments { get; } = new List<Equipment>();
+    public ICollection<Equipment> Equipment { get; } = new List<Equipment>();
 
-    public ICollection<Process> Posts { get; } = new List<Process>();
+    public ICollection<Process> Processes { get; } = new List<Process>();
 }

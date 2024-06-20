@@ -9,7 +9,7 @@ using Microsoft.Extensions.Options;
 namespace GreenOcean.Controllers;
 
 [ApiController]
-[Authorize]
+[Authorize(Roles = "Member")]
 [Route("plantphoto")]
 public class PlantPhotoController : ControllerBase
 {

@@ -1,10 +1,12 @@
 ﻿using GreenOcean.Business.DTOs;
 using GreenOcean.Business.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GreenOcean.Controllers;
 
 [ApiController]
+[Authorize(Roles = "Member")]
 [Route("sensorData")]
 public class DataControlller : ControllerBase
 {
@@ -18,7 +20,6 @@ public class DataControlller : ControllerBase
     [HttpGet("{id}/{timestamp}")]
     public async Task<IEnumerable<DataDTO>> GetAsync(Guid id, string timestamp)
     {
-
         var data = await _dataService.GetData(id, timestamp);
         return data;
     }

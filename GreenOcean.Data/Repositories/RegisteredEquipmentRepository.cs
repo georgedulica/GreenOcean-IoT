@@ -17,7 +17,7 @@ public class RegisteredEquipmentRepository : IRegisteredEquipmentRepository
         try
         {
             var codeString = code.ToString();
-            var registeredEquipment = await _dataContext.RegisteredEquipments.FirstOrDefaultAsync(e => string.Equals(e.Code, codeString));
+            var registeredEquipment = await _dataContext.RegisteredEquipment.FirstOrDefaultAsync(e => string.Equals(e.Code, codeString));
             if (registeredEquipment == null)
             {
                 return null;
@@ -55,7 +55,7 @@ public class RegisteredEquipmentRepository : IRegisteredEquipmentRepository
 
     private Task<bool> ExistsRegisteredEquipment(RegisteredEquipment registeredEquipment)
     {
-        var existingEquipment = _dataContext.RegisteredEquipments.AnyAsync(e => string.Equals(e.Code, registeredEquipment.Code));
+        var existingEquipment = _dataContext.RegisteredEquipment.AnyAsync(e => string.Equals(e.Code, registeredEquipment.Code));
         return existingEquipment;
     }
 }

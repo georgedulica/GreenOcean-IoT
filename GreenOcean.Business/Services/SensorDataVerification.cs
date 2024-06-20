@@ -30,7 +30,7 @@ public class SensorDataVerification : ISensorDataVerification
 
         string todayString = today.ToString("yyyy.MM.dd");
         var sensorData = await _dataService.GetDataByTimestamp(todayString);
-        var equipment = await _dataContext.Equipments.Include(e => e.RegisteredEquipment).ToListAsync();
+        var equipment = await _dataContext.Equipment.Include(e => e.RegisteredEquipment).ToListAsync();
 
         foreach (var data in sensorData)
         {

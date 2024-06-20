@@ -17,7 +17,22 @@ public class EquipmentRepository : IEquipmentRepository
     {
         try
         {
-            var equipment = await _dataContext.Equipments.FirstOrDefaultAsync(e => e.Id == id);
+            var equipment = await _dataContext.Equipment.FirstOrDefaultAsync(e => e.Id == id);
+            return equipment;
+        }
+        catch (Exception exception)
+        {
+            var message = $"The equipment cannot be returned {exception.Message}";
+            Console.WriteLine(message);
+            throw new Exception($"{exception}");
+        }
+    }
+
+    public async Task<Equipment?> GetEquipmentByCode(Guid id)
+    {
+        try
+        {
+            var equipment = await _dataContext.Equipment.FirstOrDefaultAsync(e => e.RegisteredEquipment.Code == id.ToString());
             return equipment;
         }
         catch (Exception exception)
@@ -32,7 +47,7 @@ public class EquipmentRepository : IEquipmentRepository
     {
         try
         {
-            var equipment = await _dataContext.Equipments.Where(e => e.GreenhouseId == id).Include(e => e.RegisteredEquipment).ToListAsync();
+            var equipment = await _dataContext.Equipment.Where(e => e.GreenhouseId == id).Include(e => e.RegisteredEquipment).ToListAsync();
             return equipment;
         }
         catch (Exception exception)
@@ -53,7 +68,7 @@ public class EquipmentRepository : IEquipmentRepository
 
         try
         {
-            await _dataContext.Equipments.AddAsync(equipment);
+            await _dataContext.Equipment.AddAsync(equipment);
             await _dataContext.SaveChangesAsync();
 
             return true;
@@ -101,7 +116,7 @@ public class EquipmentRepository : IEquipmentRepository
     {
         try
         {
-            _dataContext.Equipments.Remove(equipment);
+            _dataContext.Equipment.Remove(equipment);
             await _dataContext.SaveChangesAsync();
 
             return true;
@@ -116,9 +131,11 @@ public class EquipmentRepository : IEquipmentRepository
 
     private async Task<bool> ChecksEquipment(Equipment equipment)
     {
-        var existingEquipment = await _dataContext.Equipments.AnyAsync(e => string.Equals(e.Name, equipment.Name) 
-                && e.GreenhouseId == equipment.GreenhouseId && string.Equals(e.MaxLightLevel, equipment.MaxLightLevel) && 
-                string.Equals(e.Status, equipment.Status));
+        var existingEquipment = await _dataContext.Equipment.AnyAsync(e => string.Equals(e.Name, equipment.Name) && 
+                e.GreenhouseId == equipment.GreenhouseId && e.MaxLightLevel == equipment.MaxLightLevel &&
+                string.Equals(e.Status, equipment.Status) && e.MinLightLevel == equipment.MinLightLevel &&
+                e.MaxTemperature == equipment.MaxTemperature && e.MinTemperature == equipment.MinTemperature &&
+                e.MaxHumidity == equipment.MaxHumidity && e.MinHumidity == equipment.MinHumidity);
         return existingEquipment;
     }
 }

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOcean", "GreenOcean.csproj", "{D7DD26F6-113E-49F4-AA0D-704D5C93EBE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOcean.Controllers", "GreenOcean.Controllers.csproj", "{D7DD26F6-113E-49F4-AA0D-704D5C93EBE5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOcean.Data", "..\GreenOcean.Data\GreenOcean.Data.csproj", "{BA116BCB-FBC7-4DF4-8446-0255F212E992}"
 EndProject
@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOcean.Common", "..\Gre
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOcean.Business", "..\GreenOcean.Business\GreenOcean.Business.csproj", "{FAF97A66-447C-4444-9C41-8FA0CD336CED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenOcean.UnitTests", "..\GreenOcean.UnitTests\GreenOcean.UnitTests.csproj", "{F737E187-25D5-4FFB-A7DA-21D95F010581}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenOcean.UnitTests", "..\GreenOcean.UnitTests\GreenOcean.UnitTests.csproj", "{F737E187-25D5-4FFB-A7DA-21D95F010581}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

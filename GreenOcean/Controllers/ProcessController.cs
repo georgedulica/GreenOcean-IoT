@@ -1,16 +1,12 @@
-﻿using AutoMapper;
-using GreenOcean.Business.DTOs;
+﻿using GreenOcean.Business.DTOs;
 using GreenOcean.Business.Interfaces;
-using GreenOcean.Data;
-using GreenOcean.Data.Entities;
-using GreenOcean.Data.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
 
 namespace GreenOcean.Controllers;
 
 [ApiController]
+[Authorize(Roles = "Member")]
 [Route("processes")]
 public class ProcessController : ControllerBase
 {
@@ -34,7 +30,7 @@ public class ProcessController : ControllerBase
     }
 
     [HttpGet("getProcesses/{greenhouseId}")]
-    public async Task<ActionResult<ProcessDTO>> GetProcesses(Guid greenhouseId)
+    public async Task<ActionResult<IEnumerable<ProcessDTO>>> GetProcesses(Guid greenhouseId)
     {
         var processes = await _processService.GetProcesses(greenhouseId);
         if (processes == null)
@@ -80,4 +76,24 @@ public class ProcessController : ControllerBase
 
         return Ok();
     }
+
+    [HttpGet("ProcessStatuses")]
+    public async Task<ActionResult<IEnumerable<ProcessStatus>>> GetProcessStatuses()
+    {
+        var processStatuses = LoadProcessStatuses();
+        return Ok(processStatuses);
+    }
+
+    private IEnumerable<ProcessStatus> LoadProcessStatuses()
+    {
+        var processStatuses = new List<ProcessStatus>
+        {
+            new ProcessStatus { Status = "In Progress" },
+            new ProcessStatus { Status = "Canceled" },
+            new ProcessStatus { Status = "Completed" }
+        };
+
+        return processStatuses;
+    }
+
 }

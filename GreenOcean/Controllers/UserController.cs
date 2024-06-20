@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace GreenOcean.Controllers;
 
 [ApiController]
-[Authorize(Roles = "Admin")]
 public class UserController : ControllerBase
 {
     private readonly ICreatingUserService _creatingUserService;

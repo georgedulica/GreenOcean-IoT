@@ -7,6 +7,7 @@ namespace GreenOcean.Controllers;
 
 
 [ApiController]
+[Authorize(Roles = "Member")]
 [Route("greenhouses")]
 public class GreenhouseController : ControllerBase
 {

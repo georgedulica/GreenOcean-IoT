@@ -2,12 +2,14 @@
 using GreenOcean.Business.DTOs;
 using GreenOcean.Business.Interfaces;
 using GreenOcean.Data.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GreenOcean.Controllers;
 
 
 [ApiController]
+[Authorize(Roles = "Member")]
 [Route("iotsystems")]
 public class EquipmentController : ControllerBase
 {

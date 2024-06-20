@@ -15,9 +15,9 @@ public class DataContext : DbContext
 
     public DbSet<Plant> Plants { get; set; }
 
-    public DbSet<Equipment> Equipments { get; set; }
+    public DbSet<Equipment> Equipment { get; set; }
 
-    public DbSet<RegisteredEquipment> RegisteredEquipments { get; set; }
+    public DbSet<RegisteredEquipment> RegisteredEquipment { get; set; }
 
     public DbSet<Process> Processes { get; set; }
 }

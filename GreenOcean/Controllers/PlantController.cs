@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace GreenOcean.Controllers;
 
 [ApiController]
-[Authorize]
+[Authorize(Roles = "Member")]
 [Route("plants")]
 public class PlantsController : ControllerBase
 {
