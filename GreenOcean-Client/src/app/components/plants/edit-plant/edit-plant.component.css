@@ -1,0 +1,81 @@
+input[type=file]::-webkit-file-upload-button {
+    cursor: pointer;
+}
+
+input, select {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+form {
+    margin-top: 20px;
+}
+
+button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.upload {
+    width: 100px;
+    position: relative;
+    margin: auto;
+    text-align: center;
+}
+
+.upload img {
+    border-radius: 50%;
+    border: 3px solid #2f2e2e;
+}
+
+.upload .round {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #00B4FF;
+    width: 32px;
+    height: 32px;
+    line-height: 33px;
+    text-align: center;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.delete-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 24px;
+    height: 24px;
+    background-color: #ff0000;
+    color: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+.upload .round input[type="file"] {
+    position: absolute;
+    transform: scale(2);
+    opacity: 0;
+}
+
+.deleteButton {
+    border-width: 0;
+}

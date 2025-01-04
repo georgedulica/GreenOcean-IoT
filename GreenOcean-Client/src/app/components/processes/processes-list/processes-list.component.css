@@ -1,0 +1,95 @@
+.horizontal-line {
+    border-top: 2px solid black;
+    width: 100%;
+    position: relative;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.line-container {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.greenhouseContainer {
+    width: 30%;
+}
+
+.searchButton {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+.enitity-container {
+    white-space: nowrap;
+}
+
+.table-responsive {
+    max-height: 400px;
+    background-color: rgb(255, 255, 255);
+}
+
+.searchProcess {
+    border-radius: 0;
+    border-color: white;
+}
+
+.searchProcess:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: white;
+}
+
+.greenhouseList {
+    height: 30px;
+    padding: 5px;
+    border-radius: 0;
+    font-size: 12px;
+    border-color: white;
+    margin-top: 10px;
+}
+
+.greenhouseList:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: white;
+}
+
+.datePickerContainer {
+    display: flex;
+    flex-direction: column;
+}
+.datePicker {
+    color: black;
+    border: none;
+    outline: none;
+    margin-top: 9px;
+    height: 2em;
+}
+
+.datePicker:focus,
+.datePicker:focus-within {
+    border: none;
+    outline: none;
+}
+
+.datePicker::before {
+    content: attr(placeholder);
+    position: absolute;
+    color: #000000;
+}
+
+input[type="date"] {
+    color: #ffffff;
+}
+
+input[type="date"]:focus,
+input[type="date"]:valid {
+    color: #000000;
+}
+
+input[type="date"]:focus::before,
+input[type="date"]:valid::before {
+    content: "";
+}

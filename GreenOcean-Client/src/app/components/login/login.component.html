@@ -1,0 +1,85 @@
+<div class="container" *ngIf="!(currentUser$ | async)">
+  <div class="row">
+
+    <div class="col-md-6">
+      <h1 id="title">Green Ocean</h1>
+      <div class="image-container">
+        <img src="https://res.cloudinary.com/dzbmklzqi/image/upload/v1709063414/login/plants.avif"
+          alt="Greenhouse Hanging Baskets Seedlings">
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div id="login">
+        <h2>LOGIN</h2>
+
+        <form #loginForm="ngForm" (ngSubmit)="login()" autocomplete="off">
+          <h5 style="margin-top: 15px; margin-bottom: 10px;">Username</h5>
+          <input type="text" name="username" [(ngModel)]="model.username" class="form-control" type="text"
+            style=" margin-bottom: 10px;" placeholder="Username">
+
+          <h5 style="margin-top: 15px; margin-bottom: 10px;">Password</h5>
+          <input name="password" [(ngModel)]="model.password" class="form-control" type="password"
+            style=" margin-bottom: 20px;" placeholder="Password" name="password">
+
+          <div class="alert" *ngIf="invalidUsernameOrPassword">
+            The username or password is not correct
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: 20px">Login</button>
+
+          <div style="text-align: center; border-top: 1px solid rgb(255, 255, 255);">
+            <h6 style="margin-top: 7px;">Did you forget your password?<a
+                style="margin-left: 5px; color: rgb(31, 94, 125);" routerLink="/resetpassword">Reset password</a></h6>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="(currentUser$ | async)"  class="container-text" style="display: flex; flex-direction: column;">
+  <div *role="'Member'" class="content">
+    <h1 class="title-big">Green Ocean for people and plants</h1>
+    <p class="subtitle-small">In the dynamic world of agriculture, the integration of technology has become paramount for sustainable and efficient greenhouse management. The <label class="iot">IoT</label> solutions has revolutionized the way we cultivate crops, offering real-time monitoring, precise control, and data-driven insights. Enter Green Ocean, an innovative application designed to elevate greenhouse management to new heights, fostering sustainability and maximizing productivity.</p>
+    <div class="buttons">
+      <a class="button-custom-purple" routerLink="/plants">Go to plants</a>
+      <a class="button-custom-white">Go to systems</a>
+    </div>
+  </div>
+  <div *role="'Member'" id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true" style="margin-top: 50px;">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="https://res.cloudinary.com/dzbmklzqi/image/upload/v1710104571/home/sera4_ogbwgl.jpg" class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="https://res.cloudinary.com/dzbmklzqi/image/upload/v1710103682/home/sera3_vi6tfa.jpg" class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="https://res.cloudinary.com/dzbmklzqi/image/upload/v1710103681/home/sera1_tvk1qj.webp" class="d-block w-100" alt="...">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+  <div *role="'Admin'" class="content">
+    <h1 class="title-big">Welcome to the Admin Account</h1>
+    <p class="subtitle-small">Facilitate the seamless incorporation of new users into the system while ensuring the integration of critical systems, thereby fostering an optimal environment for sustained platform performance and operational excellence.</p>
+    <div class="buttons">
+      <a class="button-custom-purple" routerLink="/adduser">Add user</a>
+      <a class="button-custom-white" routerLink="/addsystem">Add system</a>
+    </div>
+  </div>
+</div>

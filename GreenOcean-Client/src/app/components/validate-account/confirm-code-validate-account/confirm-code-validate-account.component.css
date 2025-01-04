@@ -1,0 +1,13 @@
+.form-group {
+    margin-top: 20px;
+}
+
+.custom-border {
+    border-color: rgb(6, 212, 47);
+}
+
+.custom-container-border {
+    border: 2px solid rgb(6, 212, 47);
+    border-radius: 5px; 
+    padding: 20px; 
+}

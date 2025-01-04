@@ -1,0 +1,22 @@
+<div class="container" *ngIf="greenhouse">
+    <h2>Edit the greenhouse</h2>
+    <form #createGreenhouseForm="ngForm" (ngSubmit)="editGreenhouse()" autocomplete="off">
+      <div class="form-group">
+        <h6 for="name">Enter name:</h6>
+        <input type="text" class="form-control" name="name" [(ngModel)]="greenhouse.name">
+      </div>
+      <div class="form-group">
+        <h6 for="street">Enter street:</h6>
+        <input type="text" class="form-control" name="street" [(ngModel)]="greenhouse.street">
+      </div>
+      <div class="form-group">
+        <h6 for="number">Enter street number:</h6>
+        <input type="text" class="form-control" name="number" [(ngModel)]="greenhouse.number">
+      </div>
+      <div class="form-group">
+        <h6 for="city">Enter city:</h6>
+        <input type="text" class="form-control" name="city" [(ngModel)]="greenhouse.city">
+      </div>
+      <button type="submit" class="btn btn-warning">Save</button>
+    </form>
+</div>

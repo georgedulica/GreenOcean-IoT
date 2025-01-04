@@ -1,0 +1,16 @@
+body {
+    background-color: #f7f7f7;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.card {
+    border: 1px solid black; /* Add this line to set the border to black */
+    border-radius: 0;
+    background-color: rgb(36, 137, 90);
+    box-shadow: 15px 10px 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    color: black;
+}

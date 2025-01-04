@@ -1,0 +1,20 @@
+<div class="row justify-content-center resetPassword">
+    <div class="col-md-6 col-sm-8 col-10">
+        <div class="card">
+            <div class="card-body">
+                <h2>Confirm Code</h2>
+                <h6 style="margin-top: 15px;">Enter your code recieved over email to reset your password.</h6>
+                <form style="margin-top: 25px;" #confirmCodeForm="ngForm" (ngSubmit)="confirmCode()">
+                    <div class="form-group">
+                        <label>Code:</label>
+                        <input type="text" name="code" [(ngModel)]="model.code" class="form-control" required style="margin-top: 15px;">
+                    </div>
+                    <div class="alert alert-danger alert-dismissible fade show" style="margin-top: 15px;" *ngIf="invalidCode">
+                        <strong>The entered code is not correct.</strong>
+                    </div>
+                    <button style="margin-top: 15px;" type="submit" class="btn btn-primary">Confirm Recieved Code</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

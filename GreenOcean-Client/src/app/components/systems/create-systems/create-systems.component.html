@@ -1,0 +1,49 @@
+<div class="container">
+    <h2>Add a new IoT System</h2>
+    <form #createSystemForm="ngForm" (ngSubmit)="addSystem()" autocomplete="off">
+      <div class="form-group">
+        <h6>Enter system code:</h6>
+        <input type="text" class="form-control" name="systemId" [(ngModel)]="iotSystem.systemId">
+      </div>
+      <div class="form-group">
+        <h6>Enter name:</h6>
+        <input type="text" class="form-control" name="name" [(ngModel)]="iotSystem.name">
+      </div>
+      <div class="form-group">
+        <h6>Enter status:</h6>
+        <input type="text" class="form-control" name="status" [(ngModel)]="iotSystem.status">
+      </div>
+      <div class="form-group">
+        <h6>Enter maximum temperature:</h6>
+        <input type="text" class="form-control" name="maxTemperature" [(ngModel)]="iotSystem.maxTemperature">
+      </div>
+      <div class="form-group">
+        <h6>Enter minimum temperature:</h6>
+        <input type="text" class="form-control" name="minTemperature" [(ngModel)]="iotSystem.minTemperature">
+      </div>
+      <div class="form-group">
+        <h6>Enter maximum humidity level:</h6>
+        <input type="text" class="form-control" name="maxHumidity" [(ngModel)]="iotSystem.maxHumidity">
+      </div>
+      <div class="form-group">
+        <h6>Enter minimum humidity level:</h6>
+        <input type="text" class="form-control" name="minHumidity" [(ngModel)]="iotSystem.minHumidity">
+      </div>
+      <div class="form-group">
+        <h6>Enter maximum light level:</h6>
+        <input type="text" class="form-control" name="maxLightLevel" [(ngModel)]="iotSystem.maxLightLevel">
+      </div>
+      <div class="form-group">
+        <h6>Enter minimum light level:</h6>
+        <input type="text" class="form-control" name="minLightLevel" [(ngModel)]="iotSystem.minLightLevel">
+      </div>
+      <div class="form-group">
+        <h6>Greenhouse</h6>
+        <select class="form-select" name="greenhouseId" [value]="iotSystem.greenhouseId"
+            [(ngModel)]="iotSystem.greenhouseId">
+            <option *ngFor="let greenhouse of greenhouses" [value]="greenhouse.id">{{greenhouse.name}}</option>
+        </select>
+    </div>
+      <button type="submit" class="btn btn-warning">Save</button>
+    </form>
+</div>

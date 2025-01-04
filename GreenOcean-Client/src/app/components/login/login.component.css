@@ -1,0 +1,124 @@
+.image-container img {
+    max-width: 100%;
+}
+
+.alert {
+    padding: 5px;
+    border-radius: 5px;
+    color: #ffffff;
+    background-color: #d52533;
+}
+
+#title {
+    color: black;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#login {
+    width: 70%;
+    margin-top: 70px;
+    display: flex;
+    flex-direction: column;
+}
+
+.carousel {
+    max-width: 50em;
+    overflow: hidden;
+}
+ 
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+.container-text {
+    display: flex;
+    align-items: center;
+}
+
+.content {
+    text-align: center;
+}
+
+.title-big {
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: #f39a00;
+}
+
+.subtitle-small {
+    font-size: 24px;
+    margin-bottom: 40px;
+    color: rgb(18, 52, 28);
+}
+
+.iot {
+    color: #b2d903;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+}
+
+.button-custom-purple {
+    display: inline-block;
+    padding: 0.5em 1.4em;
+    font-size: 1em;
+    text-decoration: none;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    color: #fff;
+    background-color: #007b39; /* Set the custom color here */
+    border: #007b39;
+    border-radius: 25px;
+}
+
+.button-custom-purple:hover {
+    background-color: #f39a00; /* Darker shade for hover effect */
+    border-color: #f39a00; /* Darker shade for hover effect */
+}
+
+.button-custom-purple:active {
+    background-color: #f39a00; 
+    border-color: #f39a00;
+}
+
+.button-custom-purple:focus {
+    outline: none;
+}
+
+.button-custom-white {
+    display: inline-block;
+    padding: 0.5em 1em;
+    font-size: 1em;
+    text-decoration: none;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    color: #000000; 
+    background-color: #fff;
+    border: #fff; 
+    border-radius: 25px;
+}
+
+.button-custom-white:hover {
+    background-color: #000000; 
+    border-color: #000000;
+    color: white;
+}
+
+.button-custom-white:active {
+    background-color: #000000;
+    border-color: #000000;
+    color: white;
+}
+
+.button-custom-white:focus {
+    outline: none;
+}

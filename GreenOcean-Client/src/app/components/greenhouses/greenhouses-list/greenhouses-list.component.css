@@ -1,0 +1,38 @@
+.horizontal-line {
+    border-top: 2px solid black;
+    width: 100%;
+    position: relative;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.line-container {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.searchButton {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+.enitity-container {
+    white-space: nowrap;
+}
+
+.table-responsive {
+    max-height: 400px;
+    background-color: rgb(255, 255, 255);
+}
+
+.searchGreenhouses {
+    border-radius: 0;
+    border-color: white;
+}
+
+.searchGreenhouses:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: white;
+}

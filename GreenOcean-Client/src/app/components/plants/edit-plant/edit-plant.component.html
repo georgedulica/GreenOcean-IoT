@@ -1,0 +1,50 @@
+<div class="container" *ngIf="plant">
+    <div class="upload">
+        <button type="button" class="delete-icon deleteButton" *ngIf="buttonDeleteValue" (click)="deletePhoto()"><i
+                class="fa fa-times"></i></button>
+        <img src="{{plant.photoURL}}" width="100" height="100" alt="Plant photo">
+        <div class="round">
+            <input type="file" (change)="changePhoto($event)">
+            <i class="fa fa-camera" style="color: #fff;"></i>
+        </div>
+    </div>
+    <div class="formular">
+        <form #createPlantForm="ngForm" autocomplete="off" (ngSubmit)="editPlant()">
+            <div class="form-group">
+                <h6>Enter name:</h6>
+                <input type="text" class="form-control" name="name" [(ngModel)]="plant.name">
+            </div>
+            <div class="form-group">
+                <h6>Enter soil:</h6>
+                <input type="text" class="form-control" name="soil" [(ngModel)]="plant.soil">
+            </div>
+            <div class="form-group">
+                <h6>Enter height (cm):</h6>
+                <input type="number" class="form-control" name="height" [(ngModel)]="plant.height">
+            </div>
+            <div class="form-group">
+                <h6>Enter type:</h6>
+                <input type="text" class="form-control" name="type" [(ngModel)]="plant.type">
+            </div>
+            <div class="form-group">
+                <h6>Enter acceptable moisture level:</h6>
+                <input type="number" class="form-control" name="mositureLevel" [(ngModel)]="plant.mositureLevel">
+            </div>
+            <div class="form-group">
+                <h6>Enter acceptable humidity level:</h6>
+                <input type="number" class="form-control" name="humidity" [(ngModel)]="plant.humidity">
+            </div>
+            <div class="form-group">
+                <h6>Enter acceptable maximum temperature:</h6>
+                <input type="number" class="form-control" name="maxTemperature" [(ngModel)]="plant.temperature">
+            </div>
+            <div class="form-group">
+                <h6>Select greenhouse</h6>
+                <select class="form-select" name="greenhouseId" [(ngModel)]="plant.greenhouseId">
+                    <option *ngFor="let greenhouse of greenhouses" [value]="greenhouse.id">{{greenhouse.name}}</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-warning">Save</button>
+        </form>
+    </div>
+</div>

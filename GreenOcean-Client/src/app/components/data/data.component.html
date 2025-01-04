@@ -1,0 +1,126 @@
+<div class="container">
+    <div class="container selectContainer">
+        <div class="row">
+            <div class="col">
+                <div class="d-flex" style="margin-bottom: 20px;">
+                    <div class="greenhouseListContainer">
+                        <label>Select greenhouse:</label>
+                        <select class="form-select greenhouseList" name="greenhouses" [(ngModel)]="greenhouseId"
+                            (change)="getIoTSystems()">
+                            <option *ngFor="let greenhouse of greenhouses" [value]="greenhouse.id">{{greenhouse.name}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div *ngIf="greenhouseId" class="d-flex" style="margin-bottom: 20px;">
+                    <div class="iotSystemListContainer">
+                        <label>Select IoT system:</label>
+                        <select class="form-select iotSystemsList" name="iotSystems" [(ngModel)]="iotSystemId">
+                            <option *ngFor="let iotSystem of iotSystems" [value]="iotSystem.id">{{iotSystem.name}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div *ngIf="iotSystemId" class="d-flex flex-column dateContainer" style="margin-bottom: 20px;">
+                        <label>Select Date:</label>
+                        <input type="date" class="datePicker" placeholder="Date" (change)="getData($event)" name="selectedDate" required>
+                    </div>
+                
+            </div>
+        </div>
+    </div>    
+    <div class="row">
+        <div class="col">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">
+                                <div class="line-container">
+                                    Registration time
+                                    <button type="button" class="btn btn-link btn-sm" (click)="orderByRegistrationTime()">
+                                        <i class="fa-solid fa-arrow-up" style="color: #000000;" *ngIf="orderByRegistrationTimeButton"></i>
+                                        <i class="fa-solid fa-arrow-down" style="color: #000000;" *ngIf="!orderByRegistrationTimeButton"></i>
+                                    </button>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="line-container">
+                                    Temperature
+                                    <button type="button" class="btn btn-link btn-sm" (click)="orderByTemperature()">
+                                        <i class="fa-solid fa-arrow-up" style="color: #000000;" *ngIf="orderByTemperatureButton"></i>
+                                        <i class="fa-solid fa-arrow-down" style="color: #000000;"
+                                        *ngIf="!orderByTemperatureButton"></i>
+                                    </button>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="line-container">
+                                    Humidity
+                                    <button type="button" class="btn btn-link btn-sm" (click)="orderByHumidity()">
+                                        <i class="fa-solid fa-arrow-up" style="color: #000000;" *ngIf="orderByHumidityButton"></i>
+                                        <i class="fa-solid fa-arrow-down" style="color: #000000;"
+                                        *ngIf="!orderByHumidityButton"></i>
+                                    </button>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="line-container">
+                                    Light level
+                                    <button type="button" class="btn btn-link btn-sm" (click)="orderByLightLevel()">
+                                        <i class="fa-solid fa-arrow-up" style="color: #000000;" *ngIf="orderByLightLevelButton"></i>
+                                        <i class="fa-solid fa-arrow-down" style="color: #000000;"
+                                        *ngIf="!orderByLightLevelButton"></i>
+                                    </button>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="line-container">
+                                    Soil moisture
+                                    <button type="button" class="btn btn-link btn-sm" (click)="orderBySoilMoisture()">
+                                        <i class="fa-solid fa-arrow-up" style="color: #000000;"
+                                        *ngIf="orderBySoilMoistureButton"></i>
+                                        <i class="fa-solid fa-arrow-down" style="color: #000000;"*ngIf="!orderBySoilMoistureButton"></i>
+                                    </button>
+                                </div>
+                            </th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of data">
+                            <td>
+                                <div class="enitity-container">{{ item.timestamp | date: 'HH:mm:ss' }}</div>
+                            </td>
+                            <td>
+                                <div class="enitity-container">{{item.temperature}}%</div>
+                            </td>
+                            <td>
+                                <div class="enitity-container">{{item.humidity}}%</div>
+                            </td>
+                            <td>
+                                <div class="enitity-container">{{item.lightLevel}}%</div>
+                            </td>
+                            <td>
+                                <div class="enitity-container">{{item.soilMoisture}}</div>
+                            </td>
+                            <td>
+                                <div class="line-container">
+                                    <button class="btn btn-danger" (click)="deleteData(item.timestamp)">
+                                        <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

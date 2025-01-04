@@ -1,0 +1,24 @@
+<div class="container">
+    <h2>Add a new user</h2>
+    <form #createGreenhouseForm="ngForm" (ngSubmit)="createUser(user)" autocomplete="off">
+      <div class="form-group square">
+        <h6>First name</h6>
+        <input type="text" class="form-control" name="firstName" [(ngModel)]="user.firstName">
+      </div>
+      <div class="form-group square">
+        <h6>Last name</h6>
+        <input type="text" class="form-control" name="lastName" [(ngModel)]="user.lastName">
+      </div>
+      <div class="form-group square">
+        <h6>Email</h6>
+        <input type="text" class="form-control" name="email" [(ngModel)]="user.email">
+      </div>
+      <div class="form-group square">
+        <h6>Role</h6>
+        <select class="form-select square" name="userRole" [(ngModel)]="userRole">
+            <option *ngFor="let userRole of userRoles" [value]="userRole">{{userRole}}</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-warning">Save user</button>
+    </form>
+</div>

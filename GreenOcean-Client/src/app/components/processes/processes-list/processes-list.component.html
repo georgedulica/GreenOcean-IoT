@@ -1,0 +1,97 @@
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary" routerLink="/processes/createprocess">Register a new process</button>
+        </div>
+
+        <form class="form-inline searchBar" style="width: 50%;">
+            <div class="input-group w-100">
+                <input type="text" class="form-control form-control-sm searchProcess"
+                    placeholder="Search by name">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-warning btn-sm searchButton">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="row horizontal-line"></div>
+    
+    <div class="d-flex justify-content-around" style="margin-bottom: 50px;">
+        <div class="greenhouseContainer">
+            <label>Select greenhouse</label>
+            <select class="form-select greenhouseList" name="greenhouseId" [(ngModel)]="greenhouseId">
+                <option *ngFor="let greenhouse of greenhouses" [value]="greenhouse.id">{{greenhouse.name}}</option>
+            </select>
+        </div>
+
+        <div class="datePickerContainer" *ngIf="greenhouseId">
+            <label>Select Date</label>
+            <input type="date" class="datePicker" placeholder="Date" name="selectedDate" (change)="getProcesses($event)" required>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">
+                                <div class="line-container">
+                                    Process
+                                    <button type="button" class="btn btn-link btn-sm">
+                                        <i class="fa-solid fa-arrow-up" style="color: #000000;" *ngIf="orderByNameButton" (click)="orderByName()"></i>
+                                        <i class="fa-solid fa-arrow-down" style="color: #000000;" *ngIf="!orderByNameButton" (click)="orderByName()"></i>
+                                    </button>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="line-container">
+                                    Description
+                                    <button type="button" class="btn btn-link btn-sm">
+                                        <i class="fa-solid fa-arrow-up" style="color: #000000;" *ngIf="orderByDescriptionButton" (click)="orderByDescription"></i>
+                                        <i class="fa-solid fa-arrow-down" style="color: #000000;" *ngIf="!orderByDescriptionButton" (click)="orderByDescription"></i>
+                                    </button>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="line-container">
+                                    Date
+                                    <button type="button" class="btn btn-link btn-sm">
+                                        <i class="fa-solid fa-arrow-up" style="color: #000000;" *ngIf="orderByDateButton"></i>
+                                        <i class="fa-solid fa-arrow-down" style="color: #000000;" *ngIf="!orderByDateButton"></i>
+                                    </button>
+                                </div>
+                            </th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let process of processes">
+                        <tr>
+                            <td>
+                                <div class="enitity-container">{{process.processName}}</div>
+                            </td>
+                            <td>
+                                <div class="enitity-container">{{process.description}}</div>
+                            </td>
+                            <td>
+                                <div class="enitity-container">{{process.timestamp | date: 'MMMM d, y'}}</div>
+                            </td>
+                            <td>
+                                <div class="line-container">
+                                    <button type="button" class="btn btn-info">
+                                        <i class="fa-solid fa-pen-to-square" style="color: #ffffff;" (click)="editProcess(process.id)"></i>
+                                    </button>
+                                    <button class="btn btn-danger">
+                                        <i class="fa-solid fa-trash" style="color: #ffffff;" (click)="deleteProcess(process.id)"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
