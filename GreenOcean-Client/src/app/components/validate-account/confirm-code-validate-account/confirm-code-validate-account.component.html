@@ -1,0 +1,21 @@
+<div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card custom-container-border">
+            <div class="card-body">
+                <h2>Confirm Code</h2>
+                <h6 style="margin-top: 15px;">Enter your code recieved over email to validate your account.</h6>
+                <form #validateAccountConfirmCodeForm="ngForm" (ngSubmit)="confirmCode()" autocomplete="off">
+                    <div class="form-group">
+                        <input type="text" name="code" [(ngModel)]="model.code" class="form-control custom-border" id="code" placeholder="Code">
+                    </div>
+                    <div class="alert alert-danger alert-dismissible fade show" style="margin-top: 15px;" *ngIf="invalidCode">
+                        <strong>The entered code is not correct.</strong>
+                    </div>
+                    <button type="submit" class="btn btn-warning" style="margin-top: 20px;">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

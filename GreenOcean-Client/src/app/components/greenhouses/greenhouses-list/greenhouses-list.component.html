@@ -1,0 +1,95 @@
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary" routerLink="/greenhouses/creategreenhouse">Register a new greenhouse</button>
+        </div>
+    </div>
+    <div class="row horizontal-line"></div>
+    <div class="row mt-3 justify-content-center" style="margin-bottom: 15px;">
+        <div class="col-6">
+            <form #searchGreenhouse="ngForm" class="form-inline" style="width: 100%;" (ngSubmit)="filteredGreenhouses()">
+                <div class="input-group w-100">
+                    <input type="text" class="form-control form-control-sm searchGreenhouses" id="searchInput" placeholder="Search by name" name="searchQuery" [(ngModel)]="searchQuery">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-warning btn-sm searchButton">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">
+                                <div class="line-container">
+                                    Name 
+                                    <button type="button" class="btn btn-link btn-sm" (click)="orderByName()">
+                                        <i class="fa-solid fa-arrow-up" style="color: #000000;" *ngIf="orderByNameButton"></i>
+                                        <i class="fa-solid fa-arrow-down" style="color: #000000;" *ngIf="!orderByNameButton"></i>
+                                    </button>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="line-container">
+                                    Street 
+                                    <button type="button" class="btn btn-link btn-sm" (click)="orderByStreet()">
+                                        <i class="fa-solid fa-arrow-up" style="color: #000000;" *ngIf="orderByStreetButton"></i>
+                                        <i class="fa-solid fa-arrow-down" style="color: #000000;"  *ngIf="!orderByStreetButton"></i>
+                                    </button>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="line-container">
+                                    Number
+                                    <button type="button" class="btn btn-link btn-sm" (click)="orderByStreetNumber()">
+                                        <i class="fa-solid fa-arrow-up" style="color: #000000;" *ngIf="orderByStreetNumberButton"></i>
+                                        <i class="fa-solid fa-arrow-down" style="color: #000000;"  *ngIf="!orderByStreetNumberButton"></i>
+                                    </button>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="line-container">
+                                    City
+                                    <button type="button" class="btn btn-link btn-sm" (click)="orderByCity()">
+                                        <i class="fa-solid fa-arrow-up" style="color: #000000;" *ngIf="orderByCityButton"></i>
+                                        <i class="fa-solid fa-arrow-down" style="color: #000000;"  *ngIf="!orderByCityButton"></i>
+                                    </button>
+                                </div>
+                            </th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let greenhouse of greenhouses">
+                            <td>
+                                <div class="enitity-container">{{greenhouse.name}}</div>
+                            </td>
+                            <td>
+                                <div class="enitity-container">{{greenhouse.street}}</div>
+                            </td>
+                            <td>
+                                <div class="enitity-container">{{greenhouse.number}}</div>
+                            </td>
+                            <td>
+                                <div class="enitity-container">{{greenhouse.city}}</div>
+                            </td>
+                            <td>
+                                <div class="line-container">
+                                    <button type="button" class="btn btn-info" (click)="editGreenhouse(greenhouse.id)">
+                                        <i class="fa-solid fa-pen-to-square" style="color: #ffffff;"></i>
+                                    </button>
+                                    <button class="btn btn-danger" (click)="deleteGreenhouse(greenhouse.id)">
+                                        <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,160 @@
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary" routerLink="/systems/createsystem">Register a new system</button>
+        </div>
+    </div>
+    <div class="row horizontal-line"></div>
+    <div class="d-flex justify-content-around" style="margin-bottom: 50px;">
+        <div style="width: 30%;">
+            <label>Select greenhouse:</label>
+            <select class="form-select greenhouseList" name="greenhouseId" [(ngModel)]="greenhouseId" (change)="getSystems()">
+                <option *ngFor="let greenhouse of greenhouses" [value]="greenhouse.id">{{greenhouse.name}}</option>
+            </select>
+        </div>
+        <form class="form-inline searchBar" style="width: 50%; margin-top: auto;">
+            <div class="input-group w-100">
+                <input type="text" class="form-control form-control-sm searchSystem" id="searchInput"
+                    placeholder="Search by name">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-warning btn-sm searchButton">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">
+                                <div class="line-container">
+                                    Name 
+                                    <button type="button" class="btn btn-link btn-sm" (click)="orderByName()">
+                                        <i class="fa-solid fa-arrow-up" style="color: #000000;" *ngIf="orderByNameButton"></i>
+                                        <i class="fa-solid fa-arrow-down" style="color: #000000;" *ngIf="!orderByNameButton"></i>
+                                    </button>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="line-container">
+                                    Date of registration
+                                    <button type="button" class="btn btn-link btn-sm" (click)="orderByTimestamp()">
+                                        <i class="fa-solid fa-arrow-up" style="color: #000000;" *ngIf="orderByTimeStampButton"></i>
+                                        <i class="fa-solid fa-arrow-down" style="color: #000000;"  *ngIf="!orderByTimeStampButton"></i>
+                                    </button>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="line-container">
+                                    Status
+                                    <button type="button" class="btn btn-link btn-sm" (click)="orderByStatus()">
+                                        <i class="fa-solid fa-arrow-up" style="color: #000000;" *ngIf="orderByStatusButton"></i>
+                                        <i class="fa-solid fa-arrow-down" style="color: #000000;"  *ngIf="!orderByStatusButton"></i>
+                                    </button>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="line-container">
+                                    Maximum temperature
+                                    <button type="button" class="btn btn-link btn-sm" (click)="orderByMaxTemperature()">
+                                        <i class="fa-solid fa-arrow-up" style="color: #000000;" *ngIf="orderByMaxTemperatureButton"></i>
+                                        <i class="fa-solid fa-arrow-down" style="color: #000000;"  *ngIf="!orderByMaxTemperatureButton"></i>
+                                    </button>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="line-container">
+                                    Minimum temperature
+                                    <button type="button" class="btn btn-link btn-sm" (click)="orderByMinTemperature()">
+                                        <i class="fa-solid fa-arrow-up" style="color: #000000;" *ngIf="orderByMinTemperatureButton"></i>
+                                        <i class="fa-solid fa-arrow-down" style="color: #000000;"  *ngIf="!orderByMinTemperatureButton"></i>
+                                    </button>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="line-container">
+                                    Maximum humidity
+                                    <button type="button" class="btn btn-link btn-sm" (click)="orderByMaxHumidity()">
+                                        <i class="fa-solid fa-arrow-up" style="color: #000000;" *ngIf="orderByMaxHumidityButton"></i>
+                                        <i class="fa-solid fa-arrow-down" style="color: #000000;"  *ngIf="!orderByMaxHumidityButton"></i>
+                                    </button>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="line-container">
+                                    Minimum humidity
+                                    <button type="button" class="btn btn-link btn-sm" (click)="orderByMinHumidity()">
+                                        <i class="fa-solid fa-arrow-up" style="color: #000000;" *ngIf="orderByMinHumidityButton"></i>
+                                        <i class="fa-solid fa-arrow-down" style="color: #000000;"  *ngIf="!orderByMinHumidityButton"></i>
+                                    </button>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="line-container">
+                                    Maximum light level
+                                    <button type="button" class="btn btn-link btn-sm" (click)="orderByMaxLightLevel()">
+                                        <i class="fa-solid fa-arrow-up" style="color: #000000;" *ngIf="orderByMaxLightLevelButton"></i>
+                                        <i class="fa-solid fa-arrow-down" style="color: #000000;"  *ngIf="!orderByMaxLightLevelButton"></i>
+                                    </button>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="line-container">
+                                    Minimum light level
+                                    <button type="button" class="btn btn-link btn-sm" (click)="orderByMinLightLevel()">
+                                        <i class="fa-solid fa-arrow-up" style="color: #000000;" *ngIf="orderByMinLightLevelButton"></i>
+                                        <i class="fa-solid fa-arrow-down" style="color: #000000;"  *ngIf="!orderByMinLightLevelButton"></i>
+                                    </button>
+                                </div>
+                            </th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let iotSystem of iotSystems">
+                            <td>
+                                <div class="enitity-container">{{iotSystem.name}}</div>
+                            </td>
+                            <td>
+                                <div class="enitity-container">{{iotSystem.timestamp| date: 'dd/MM/yyyy'}}</div>
+                            </td>
+                            <td>
+                                <div class="enitity-container">{{iotSystem.status}}</div>
+                            </td>
+                            <td>
+                                <div class="enitity-container">{{iotSystem.maxTemperature}}&deg;</div>
+                            </td>
+                            <td>
+                                <div class="enitity-container">{{iotSystem.minTemperature}}&deg;</div>
+                            </td>
+                            <td>
+                                <div class="enitity-container">{{iotSystem.maxHumidity}}%</div>
+                            </td>
+                            <td>
+                                <div class="enitity-container">{{iotSystem.minHumidity}}%</div>
+                            </td>
+                            <td>
+                                <div class="enitity-container">{{iotSystem.maxLightLevel}}%</div>
+                            </td>
+                            <td>
+                                <div class="enitity-container">{{iotSystem.minLightLevel}}%</div>
+                            </td>
+                            <td>
+                                <div class="line-container">
+                                    <button type="button" class="btn btn-info" (click)="editSystem(iotSystem.id)">
+                                        <i class="fa-solid fa-pen-to-square" style="color: #ffffff;"></i>
+                                    </button>
+                                    <button class="btn btn-danger" (click)="deleteSystem(iotSystem.id)">
+                                        <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

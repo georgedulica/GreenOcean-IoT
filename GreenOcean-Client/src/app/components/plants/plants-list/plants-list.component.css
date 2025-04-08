@@ -1,0 +1,74 @@
+.horizontal-line {
+    border-top: 2px solid black;
+    width: 100%;
+    position: relative;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.card {
+    margin-bottom: 50px;
+    border: 0;
+}
+
+.card-img-top {
+    object-fit: cover;
+    width: 100%;
+    height: 200px;
+}
+
+.greenhouseList {
+    height: 30px;
+    padding: 5px;
+    border-radius: 0;
+    font-size: 12px;
+    border-color: white;
+    margin-top: 10px;
+}
+
+.greenhouseList:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: white;
+}
+
+.searchPlant {
+    border-radius: 0;
+    border-color: white;
+}
+
+.searchPlant:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: white;
+}
+
+.searchButton {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.delete,
+.edit {
+    width: 25px;
+    height: 25px;
+    padding: 0;
+}
+
+.delete i,
+.edit i {
+    display: block;
+    margin: auto;
+    font-size: 12px;
+}
+
+p {
+    color: rgb(0, 0, 0);
+}
+
+.line-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 5px;
+}

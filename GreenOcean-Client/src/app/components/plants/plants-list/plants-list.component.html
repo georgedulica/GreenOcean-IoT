@@ -1,0 +1,53 @@
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary" routerLink="/greenhouses/creategreenhouse"
+                routerLink="/plants/createplant">Register a new plant</button>
+        </div>
+    </div>
+    <div class="row horizontal-line"></div>
+    <div class="d-flex justify-content-around" style="margin-bottom: 50px;">
+        <div style="width: 30%;">
+            <label>Select greenhouse:</label>
+            <select class="form-select greenhouseList" name="greenhouse" [(ngModel)]="greenhouseId" (change)="getPlants()">
+                <option *ngFor="let greenhouse of greenhouses" [value]="greenhouse.id">{{greenhouse.name}}</option>
+            </select>
+        </div>
+        <form class="form-inline searchBar" style="width: 50%; margin-top: auto;">
+            <div class="input-group w-100">
+                <input type="text" class="form-control form-control-sm searchPlant" id="searchInput"
+                    placeholder="Search by name">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-warning btn-sm searchButton">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3" *ngFor="let plant of plants">
+            <div class="card">
+                <img src="{{plant.photoURL}}" class="card-img-top" alt="Image">
+                <div class="card-body">
+                    <div class="line-container">
+                        <h6 class="card-title" style="margin-bottom: 15px;">Name: {{plant.name}}</h6>
+                        <div class="line-container">
+                            <button type="button" class="btn btn-info edit" (click)="editPlant(plant.id)">
+                                <i class="fa-solid fa-pen-to-square" style="color: #ffffff;"></i>
+                            </button>
+                            <button class="btn btn-danger delete" (click)="deletePlant(plant.id)">
+                                <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="card-text">Soil: {{plant.soil}}</p>
+                    <p class="card-text">Height: {{plant.height}} cm</p>
+                    <p class="card-text">Type: {{plant.type}}</p>
+                    <p class="card-text">Acceptable moisture level: {{plant.mositureLevel}}%</p>
+                    <p class="card-text">Acceptable humidity level: {{plant.humidity}}%</p>
+                    <p class="card-text">Acceptable temperature: {{plant.temperature}}°C</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

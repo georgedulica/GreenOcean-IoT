@@ -1,0 +1,16 @@
+.btn-settings {
+    padding: 4px; 
+    border-radius: 2px;
+}
+
+.btn-logout {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 7px; 
+    padding-right: 7px; 
+    border-radius: 2px;
+}
+
+.nav-link:hover, .navbar-brand:hover{
+    color: rgb(74, 137, 22) !important;
+}

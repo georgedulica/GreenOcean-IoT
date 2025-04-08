@@ -1,0 +1,49 @@
+input, select {
+    width: 30%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 0px;
+}
+
+form {
+    margin-top: 20px;
+}
+
+button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.datePicker {
+    color: black;
+    border: none;
+    outline: none;
+    margin-top: 9px;
+    height: 2em;
+}
+
+.datePicker:focus,
+.datePicker:focus-within {
+    border: none;
+    outline: none;
+}
+
+.datePicker::before {
+    content: attr(placeholder);
+    position: absolute;
+    color: #000000;
+}
+
+input[type="date"] {
+    color: #ffffff;
+}
+
+input[type="date"]:focus,
+input[type="date"]:valid {
+    color: #000000;
+}
+
+input[type="date"]:focus::before,
+input[type="date"]:valid::before {
+    content: "";
+}

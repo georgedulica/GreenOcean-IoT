@@ -1,0 +1,25 @@
+<div class="container">
+    <h2>Add a new greenhouse</h2>
+    <form #createGreenhouseForm="ngForm" (ngSubmit)="addGreenhouse()" autocomplete="off">
+      <div class="form-group">
+        <h6 for="name">Name</h6>
+        <input type="text" class="form-control" name="name" [(ngModel)]="model.name">
+      </div>
+      <div class="form-group">
+        <h6 for="street">Street</h6>
+        <input type="text" class="form-control" name="street" [(ngModel)]="model.street">
+      </div>
+      <div class="form-group">
+        <h6 for="number">Street number</h6>
+        <input type="text" class="form-control" name="number" [(ngModel)]="model.number">
+      </div>
+      <div class="form-group">
+        <h6 for="city">City</h6>
+        <input type="text" class="form-control" name="city" [(ngModel)]="model.city">
+      </div>
+      <div class="form-group alert" *ngIf="invalidGreenhouse">
+        This greenhouse already exists
+      </div>
+      <button type="submit" class="btn btn-warning">Save greenhouse</button>
+    </form>
+</div>

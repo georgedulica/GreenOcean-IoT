@@ -1,0 +1,73 @@
+.selectContainer {
+    margin-bottom: 25px;
+}
+.greenhouseListContainer, 
+.iotSystemListContainer,
+.dateContainer {
+    width: 25%;
+}
+
+.greenhouseList,
+.iotSystemsList {
+    height: 30px;
+    padding: 5px;
+    border-radius: 0;
+    font-size: 12px;
+    border-color: white;
+    margin-top: 10px;
+}
+
+.greenhouseList:focus,
+.iotSystemsList:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: white;
+}
+
+.enitity-container {
+    white-space: nowrap;
+}
+
+.table-responsive {
+    max-height: 400px;
+    background-color: rgb(255, 255, 255);
+}
+
+.datePickerContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.datePicker {
+    color: black;
+    border: none;
+    outline: none;
+    margin-top: 9px;
+    height: 1.5em;
+}
+
+.datePicker:focus,
+.datePicker:focus-within {
+    border: none;
+    outline: none;
+}
+
+.datePicker::before {
+    content: attr(placeholder);
+    position: absolute;
+    color: #000000;
+}
+
+input[type="date"] {
+    color: #ffffff;
+}
+
+input[type="date"]:focus,
+input[type="date"]:valid {
+    color: #666666;
+}
+
+input[type="date"]:focus::before,
+input[type="date"]:valid::before {
+    content: "";
+}
